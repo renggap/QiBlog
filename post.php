@@ -68,7 +68,7 @@ if (!$post) {
 
     <footer class="footer">
         <div class="content has-text-centered">
-            <p>Powered by Flat-File CMS</p>
+            <p>Powered by <a href="https://github.com/renggap/QiBlog" target="_blank">QiBlog</a> Flat-File CMS</p>
         </div>
     </footer>
 
