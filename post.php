@@ -18,7 +18,7 @@ if (!$post) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php echo generate_meta_tags($post); ?>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <script type="application/ld+json">
     {
@@ -38,18 +38,21 @@ if (!$post) {
     </script>
 </head>
 <body>
-    <header class="bg-dark text-white text-center py-5 mb-4">
-        <div class="container">
-            <h1 class="fw-light"><a href="/index.php" class="text-white text-decoration-none"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></a></h1>
+    <section class="hero is-dark is-bold">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title"><a href="/index.php" class="has-text-white"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></a></h1>
+            </div>
         </div>
-    </header>
+    </section>
 
-    <main class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
                 <article>
-                    <h1><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                    <p class="text-muted"><?php echo htmlspecialchars(date('F j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?> | Categories: <?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?> | Tags: <?php echo htmlspecialchars(implode(', ', $post['tags']), ENT_QUOTES, 'UTF-8'); ?></p>
+                    <h1 class="title"><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
+                    <p class="is-size-7 has-text-grey"><?php echo htmlspecialchars(date('F j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?> | Categories: <?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?> | Tags: <?php echo htmlspecialchars(implode(', ', $post['tags']), ENT_QUOTES, 'UTF-8'); ?></p>
                     <div class="content">
                         <?php
                         // Define allowed HTML tags for content from CKEditor
@@ -58,17 +61,16 @@ if (!$post) {
                         ?>
                     </div>
                 </article>
-                <a href="/index.php" class="btn btn-secondary mt-3">← Back to Home</a>
+                <a href="/index.php" class="button is-light mt-3">← Back to Home</a>
             </div>
         </div>
-    </main>
+    </section>
 
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Powered by Flat-File CMS</p>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>Powered by Flat-File CMS</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

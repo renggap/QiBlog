@@ -11,66 +11,68 @@ $posts = $result['posts'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php echo generate_meta_tags(); ?>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <header class="bg-dark text-white text-center py-5 mb-4">
-        <div class="container">
-            <h1 class="fw-light"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></h1>
-            <p class="lead">Latest Posts</p>
+    <section class="hero is-dark is-bold">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></h1>
+                <p class="subtitle">Latest Posts</p>
+            </div>
         </div>
-    </header>
+    </section>
 
-    <main class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
                 <?php foreach ($posts as $post): ?>
                     <div class="card mb-4">
-                        <div class="card-body">
-                            <h2 class="card-title"><a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html" class="text-decoration-none"><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?></a></h2>
-                            <p class="card-text"><?php echo htmlspecialchars($post['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p class="card-text"><small class="text-muted"><?php echo htmlspecialchars(date('F j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?> | Categories: <?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?> | Tags: <?php echo htmlspecialchars(implode(', ', $post['tags']), ENT_QUOTES, 'UTF-8'); ?></small></p>
-                            <a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html" class="btn btn-primary">Read More</a>
+                        <div class="card-content">
+                            <h2 class="title is-4"><a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?></a></h2>
+                            <p class="content"><?php echo htmlspecialchars($post['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p class="is-size-7 has-text-grey"><?php echo htmlspecialchars(date('F j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?> | Categories: <?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?> | Tags: <?php echo htmlspecialchars(implode(', ', $post['tags']), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html" class="button is-primary">Read More</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
 
                 <?php if (empty($posts)): ?>
-                    <div class="text-center">
+                    <div class="has-text-centered">
                         <p>No posts yet. <a href="admin/login.php">Login</a> to create your first post.</p>
                     </div>
                 <?php endif; ?>
 
                 <?php if ($result['total_pages'] > 1): ?>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <?php if ($page > 1): ?>
-                                <li class="page-item"><a class="page-link" href="?page=<?php echo $page - 1; ?>">Previous</a></li>
-                            <?php endif; ?>
+                    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                        <?php if ($page > 1): ?>
+                            <a class="pagination-previous" href="?page=<?php echo $page - 1; ?>">Previous</a>
+                        <?php endif; ?>
 
+                        <?php if ($page < $result['total_pages']): ?>
+                            <a class="pagination-next" href="?page=<?php echo $page + 1; ?>">Next</a>
+                        <?php endif; ?>
+
+                        <ul class="pagination-list">
                             <?php for ($i = 1; $i <= $result['total_pages']; $i++): ?>
-                                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
-                                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                <li>
+                                    <a class="pagination-link <?php echo $i == $page ? 'is-current' : ''; ?>" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
                                 </li>
                             <?php endfor; ?>
-
-                            <?php if ($page < $result['total_pages']): ?>
-                                <li class="page-item"><a class="page-link" href="?page=<?php echo $page + 1; ?>">Next</a></li>
-                            <?php endif; ?>
                         </ul>
                     </nav>
                 <?php endif; ?>
             </div>
         </div>
-    </main>
+    </section>
 
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Powered by Flat-File CMS</p>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>Powered by Flat-File CMS</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
