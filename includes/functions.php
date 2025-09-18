@@ -47,12 +47,20 @@ function sanitize_slug($slug) {
 }
 
 // Post functions
-function get_posts($page = 1, $per_page = 10) {
+function get_posts($page = 1, $per_page = null) {
     $all_files = glob(POSTS_DIR . '*' . POSTS_EXT);
     rsort($all_files); // Newest first
     $total = count($all_files);
-    $offset = ($page - 1) * $per_page;
-    $files = array_slice($all_files, $offset, $per_page);
+
+    if ($per_page === null) {
+        $files = $all_files;
+        $total_pages = 1;
+        $per_page = $total;
+    } else {
+        $offset = ($page - 1) * $per_page;
+        $files = array_slice($all_files, $offset, $per_page);
+        $total_pages = ceil($total / $per_page);
+    }
 
     $posts = [];
     foreach ($files as $file) {
@@ -67,7 +75,7 @@ function get_posts($page = 1, $per_page = 10) {
         'total' => $total,
         'page' => $page,
         'per_page' => $per_page,
-        'total_pages' => ceil($total / $per_page)
+        'total_pages' => $total_pages
     ];
 }
 
@@ -98,7 +106,8 @@ function parse_post($file) {
         'tags' => $frontmatter['tags'] ?? [],
         'excerpt' => $frontmatter['excerpt'] ?? substr(strip_tags($body), 0, 150) . '...',
         'content' => $body,
-        'file' => $file
+        'file' => $file,
+        'modified' => filemtime($file)
     ];
 }
 
@@ -201,13 +210,15 @@ function generate_meta_tags($post = null) {
 }
 
 function generate_sitemap() {
-    $posts = get_posts();
+    $result = get_posts();
+    $posts = $result['posts'];
     $sitemap = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
     $sitemap .= '<url><loc>' . SITE_URL . '</loc><lastmod>' . date('Y-m-d') . '</lastmod></url>' . "\n";
 
     foreach ($posts as $post) {
-        $sitemap .= '<url><loc>' . SITE_URL . '/post/' . $post['slug'] . '.html</loc><lastmod>' . date('Y-m-d', strtotime($post['date'])) . '</lastmod></url>' . "\n";
+        if (!isset($post['slug']) || empty($post['slug'])) continue;
+        $sitemap .= '<url><loc>' . SITE_URL . '/post/' . $post['slug'] . '.html</loc><lastmod>' . date('Y-m-d', $post['modified']) . '</lastmod></url>' . "\n";
     }
 
     $sitemap .= '</urlset>';

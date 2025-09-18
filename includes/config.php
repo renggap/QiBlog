@@ -1,7 +1,7 @@
 <?php
 
 define('SITE_TITLE', 'Static Blog');
-define('SITE_URL', 'http://localhost:8000');
+define('SITE_URL', 'https://static.on-development.my.id');
 define('POSTS_DIR', __DIR__ . '/../posts/');
 define('POSTS_EXT', '.html');
 // It is highly recommended to set this password via an environment variable for security.

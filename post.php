@@ -19,7 +19,7 @@ if (!$post) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php echo generate_meta_tags($post); ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
