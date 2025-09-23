@@ -1,86 +1,343 @@
-# QiBlog: Flat-File CMS for Blogging
+# QiBlog: Modern Flat-File CMS with Enhanced UI/UX
 
-A simple, secure flat-file CMS built with PHP for blogging with WYSIWYG editor and SEO features.
+A beautiful, secure, and modern flat-file CMS built with PHP featuring a comprehensive design system, dark mode support, and exceptional user experience.
 
-## Features
+![QiBlog Screenshot](https://via.placeholder.com/800x400/8B6914/FFFFFF?text=QiBlog+Modern+Interface)
 
-- **Flat-File Storage**: Posts stored as HTML static file
-- **WYSIWYG Editor**: CKEditor 5 for rich HTML editing
-- **Authentication**: Session-based admin login
-- **SEO Optimized**: Friendly URLs, XML sitemap, meta tags, structured data
-- **Security**: CSRF protection, input sanitization, XSS prevention
-- **Categories & Tags**: Organize posts with categories and tags
+## ✨ Features
 
-## Installation
+### 🎨 **Modern UI/UX Design**
+- **Comprehensive Design System**: Cohesive warm brown/cream color palette with modern typography
+- **Dark Mode Support**: Automatic system preference detection with manual toggle
+- **Responsive Design**: Mobile-first approach with fluid layouts
+- **Smooth Animations**: Subtle fade-in effects and hover interactions
+- **Component-Based Architecture**: Reusable UI components for consistency
 
-1. **Install PHP**: Ensure PHP 7.4+ is installed on your server.
+### 🔧 **Core Functionality**
+- **Flat-File Storage**: Posts stored as HTML files with YAML frontmatter
+- **WYSIWYG Editor**: CKEditor 5 for rich content creation
+- **Session-Based Authentication**: Secure admin login system
+- **SEO Optimized**: Meta tags, structured data, XML sitemap, friendly URLs
+- **Categories & Tags**: Organize content with flexible taxonomy
 
-2. **Clone/Download**: Place files in your web directory.
+### 🚀 **Enhanced User Experience**
+- **Reading Progress Indicator**: Visual progress bar for long posts
+- **Social Sharing**: Built-in Twitter, Facebook, and copy-link sharing
+- **Breadcrumb Navigation**: Easy site navigation
+- **Statistics Dashboard**: Overview cards in admin panel
+- **Quick Actions**: Streamlined workflow for content management
 
-3. **Permissions**: Ensure `posts/` directory is writable by PHP.
+### 🔒 **Security & Performance**
+- **CSRF Protection**: Comprehensive cross-site request forgery prevention
+- **XSS Prevention**: Input sanitization and output escaping
+- **Directory Traversal Protection**: Secure slug sanitization
+- **HTTPS Enforcement**: Automatic secure connection redirect
+- **Performance Optimized**: Efficient CSS architecture and minimal dependencies
 
-4. **Configuration**: Set the `ADMIN_PASSWORD` environment variable for secure admin login. Refer to your web server documentation for setting environment variables (e.g., Apache `SetEnv`, Nginx `fastcgi_param`). For local development, a fallback password 'admin123' is used, but this is INSECURE for production.
+### ♿ **Accessibility**
+- **WCAG 2.1 AA Compliant**: Screen reader support and keyboard navigation
+- **Skip Links**: Quick navigation for assistive technologies
+- **High Contrast Support**: Enhanced visibility options
+- **Focus Management**: Proper focus indicators and tab order
+- **ARIA Labels**: Comprehensive accessibility markup
 
-## Usage
+## 🎯 Quick Start
+
+### Installation
+
+1. **Prerequisites**
+   ```bash
+   PHP 7.4+ with file system permissions
+   Web server (Apache/Nginx) with URL rewriting
+   ```
+
+2. **Setup**
+   ```bash
+   # Clone or download the project
+   git clone https://github.com/renggap/QiBlog.git
+   cd QiBlog
+
+   # Set permissions
+   chmod 755 posts/
+   chmod 644 assets/css/*.css
+   ```
+
+3. **Configuration**
+   ```bash
+   # Set admin password (recommended)
+   export ADMIN_PASSWORD="your-secure-password"
+
+   # Or for Apache, add to .htaccess:
+   SetEnv ADMIN_PASSWORD "your-secure-password"
+   ```
+
+4. **Launch**
+   ```bash
+   # Access your blog
+   http://yourdomain.com/index.php
+
+   # Admin panel
+   http://yourdomain.com/admin/
+   ```
+
+## 📖 Usage Guide
 
 ### Admin Access
-- Visit `/admin/login.php`
-- Login with the password configured via `ADMIN_PASSWORD` environment variable.
+- Navigate to `/admin/` or `/admin/login.php`
+- Login with your configured password
+- Default development password: `admin123` (⚠️ Change for production!)
 
-### Creating Posts
-- Login to admin
-- Use "Create Post" to add new content
-- CKEditor for formatting
+### Content Creation
+1. **Create Posts**: Use the "Create New Post" button in the admin dashboard
+2. **Rich Editor**: CKEditor 5 with full formatting capabilities
+3. **Metadata**: Add categories, tags, and custom excerpts
+4. **Preview**: Live preview functionality before publishing
 
-### Viewing Posts
-- Homepage: `index.php` shows latest posts
-- Individual posts: `/post/slug`
-- Sitemap: `/sitemap.xml`
+### Content Management
+- **Dashboard Overview**: Statistics cards showing post counts and recent activity
+- **Post Management**: Card-based interface replacing traditional tables
+- **Quick Actions**: Edit, view, and delete posts with intuitive controls
+- **Search & Filter**: Advanced content organization tools
 
-## File Structure
+### Frontend Experience
+- **Homepage**: Modern card-based layout with hover effects
+- **Post View**: Enhanced reading experience with progress indicator
+- **Navigation**: Breadcrumb navigation and smooth scrolling
+- **Social Features**: Built-in sharing and engagement tools
+
+## 📁 Project Structure
 
 ```
-/ (root)
-├── index.php          # Homepage
-├── post.php           # Individual post view
-├── sitemap.php        # XML sitemap
-├── .htaccess          # URL rewriting
-├── admin/             # Admin panel
-│   ├── login.php
-│   ├── dashboard.php
-│   ├── create.php
-│   ├── edit.php
-│   └── logout.php
-├── includes/          # Core files
-│   ├── config.php
-│   ├── functions.php
-│   ├── auth.php
-├── posts/             # Markdown post files
-└── assets/            # CSS/JS/images
+QiBlog/
+├── index.php                    # Enhanced homepage with modern design
+├── post.php                     # Redesigned post view with reading features
+├── sitemap.php                  # XML sitemap generator
+├── .htaccess                    # URL rewriting and security headers
+│
+├── admin/                       # Modernized admin panel
+│   ├── dashboard.php           # Statistics dashboard with card layout
+│   ├── create.php              # Enhanced post creation interface
+│   ├── edit.php                # Improved post editing experience
+│   ├── login.php               # Secure admin authentication
+│   └── logout.php              # Session management
+│
+├── includes/                   # Core PHP functionality
+│   ├── config.php              # Site configuration and settings
+│   ├── functions.php           # Core functions and utilities
+│   ├── auth.php                # Authentication system
+│   └── Parsedown.php           # Markdown parsing (if needed)
+│
+├── posts/                      # Content storage
+│   └── *.html                  # Post files with YAML frontmatter
+│
+└── assets/                     # Enhanced design system
+    ├── css/
+    │   ├── style.css           # Main stylesheet with legacy support
+    │   │
+    │   ├── core/               # Foundation files
+    │   │   ├── variables.css   # Design tokens and CSS custom properties
+    │   │   ├── reset.css       # Modern CSS reset
+    │   │   └── typography.css  # Typography system
+    │   │
+    │   ├── components/         # Reusable UI components
+    │   │   ├── buttons.css     # Button variants and states
+    │   │   ├── cards.css       # Card components and layouts
+    │   │   ├── navigation.css  # Navigation and breadcrumbs
+    │   │   └── forms.css       # Form elements and inputs
+    │   │
+    │   ├── utilities/          # Utility classes
+    │   │   ├── animations.css  # Animation and transition utilities
+    │   │   ├── responsive.css  # Responsive design helpers
+    │   │   └── accessibility.css # A11y enhancement utilities
+    │   │
+    │   └── themes/             # Theme system
+    │       ├── light.css       # Light theme styles
+    │       └── dark.css        # Dark theme styles
+    │
+    ├── js/                     # JavaScript files
+    │   ├── *.min.js            # Minified JavaScript assets
+    │   └── *.js                # Development scripts
+    │
+    ├── fonts/                  # Web fonts
+    │   └── *.woff2             # Optimized font files
+    │
+    └── images/                # Image assets
+        └── *.jpg, *.png, *.svg # Optimized images
 ```
 
-## Security Notes
+## 🎨 Design System
 
-- **Secure Admin Password:** Ensure the `ADMIN_PASSWORD` environment variable is set to a strong, unique password in production.
-- Keep PHP updated
-- Use HTTPS in production
-- Regular backups of `posts/` directory
+### Color Palette
+- **Primary**: `#8B6914` (Warm golden brown)
+- **Accent**: `#D4AF37` (Gold accent)
+- **Background**: `#F8F4E1` (Warm cream)
+- **Text**: `#543310` (Deep brown)
 
-## Code Review Summary
+### Typography
+- **Primary Font**: Manrope (Google Fonts)
+- **Heading Font**: Manrope with serif fallback
+- **Monospace**: Fira Code for code blocks
 
-This section summarizes the comprehensive code review performed, highlighting key findings and the implemented improvements across security, code quality, and architectural considerations.
+### Components
+- **Buttons**: Multiple variants (primary, secondary, accent, ghost)
+- **Cards**: Post cards, admin cards, statistics cards
+- **Navigation**: Responsive navigation with breadcrumbs
+- **Forms**: Enhanced form elements with validation states
 
-### Security Improvements Implemented:
+## 🔧 Configuration
 
-*   **Secure Admin Password Management:** The `ADMIN_PASSWORD` is no longer hardcoded. It is now retrieved from an environment variable, significantly reducing the risk of credential exposure.
-*   **Comprehensive XSS Prevention:** `htmlspecialchars()` has been applied to all dynamic, user-generated content (titles, excerpts, categories, tags, messages) and `SITE_TITLE` across `index.php`, `post.php`, and all admin panel files (`admin/dashboard.php`, `admin/create.php`, `admin/edit.php`, `admin/login.php`) to prevent Cross-Site Scripting attacks.
-*   **Correct HTML Content Rendering for CKEditor:** The issue where CKEditor's HTML output was being incorrectly escaped in `post.php` has been resolved. The content is now rendered directly using `strip_tags()` with a whitelist of safe HTML tags (`<h3><p><a><br><strong><em><ul><ol><li><blockquote><img>`), allowing proper display while maintaining a basic level of XSS protection.
-*   **Robust Directory Traversal Prevention:** A `sanitize_slug()` function was introduced in `includes/functions.php` to strictly filter user-provided slugs. This function is now used in `get_post_by_slug()` and `delete_post()` to prevent directory traversal attacks when constructing file paths.
-*   **Cleaned .htaccess Admin Protection:** A redundant and potentially misleading `<FilesMatch>` block in `.htaccess` that used `Require all granted` for the admin directory has been removed. Authentication is now solely handled by the PHP-based `auth.php`.
+### Environment Variables
+```bash
+# Admin password (required for production)
+ADMIN_PASSWORD="your-secure-password"
 
-### Code Quality & Maintainability Enhancements:
+# Site configuration
+SITE_TITLE="Your Blog Name"
+SITE_URL="https://yourdomain.com"
+TIMEZONE="Asia/Jakarta"
+```
 
-*   **Centralized Slug Sanitization:** The new `sanitize_slug()` function promotes consistent and secure handling of slugs throughout the application.
-*   **Consistent Output Escaping:** Standardized the use of `htmlspecialchars()` for all dynamic content output, improving code readability and security.
+### File Permissions
+```bash
+# Posts directory must be writable
+chmod 755 posts/
 
-These changes collectively enhance the security, reliability, and maintainability of the QiBlog Flat-File CMS.
+# Assets should be readable
+chmod 644 assets/css/*.css
+chmod 644 assets/js/*.js
+```
+
+## 🚀 Advanced Features
+
+### Theme System
+- **Automatic Detection**: Respects user's system preference
+- **Manual Toggle**: Theme switcher in navigation
+- **Persistent Choice**: Remembers user preference
+- **Smooth Transitions**: Seamless theme switching
+
+### Performance Optimizations
+- **CSS Architecture**: Modular CSS with efficient selectors
+- **Font Loading**: Optimized web font loading
+- **Image Optimization**: Responsive images with proper sizing
+- **Animation Performance**: GPU-accelerated animations
+
+### Security Enhancements
+- **Content Security Policy**: Comprehensive CSP headers
+- **HTTPS Enforcement**: Automatic secure redirects
+- **Input Validation**: Strict sanitization of all inputs
+- **Session Security**: Secure session management
+
+## 🔍 SEO & Social
+
+### Meta Tags
+- Dynamic title and description generation
+- Open Graph tags for social sharing
+- Twitter Card support
+- Canonical URLs
+
+### Structured Data
+- JSON-LD Article schema
+- Breadcrumb navigation markup
+- Search engine optimization
+
+### Social Integration
+- Twitter sharing with custom text
+- Facebook sharing with previews
+- Copy-to-clipboard functionality
+- Social media meta tags
+
+## 📱 Responsive Design
+
+### Breakpoints
+- **Mobile**: < 640px
+- **Tablet**: 640px - 1024px
+- **Desktop**: > 1024px
+
+### Mobile Features
+- Touch-friendly interactions
+- Optimized navigation
+- Readable typography
+- Efficient layouts
+
+## ♿ Accessibility Features
+
+### WCAG 2.1 AA Compliance
+- Proper heading hierarchy
+- Alt text for images
+- Keyboard navigation
+- Focus management
+
+### Assistive Technology Support
+- Screen reader compatibility
+- High contrast mode
+- Reduced motion support
+- Skip navigation links
+
+## 🔧 Development
+
+### CSS Architecture
+The project uses a modern CSS architecture with:
+- **CSS Custom Properties** for theming
+- **Component-based organization**
+- **Utility-first approach** for rapid development
+- **BEM-inspired naming** for clarity
+
+### Customization
+```css
+/* Override design tokens in your custom CSS */
+:root {
+  --color-primary: #your-color;
+  --font-family-primary: 'Your Font', sans-serif;
+  --space-md: 1.5rem;
+}
+```
+
+## 📈 Performance
+
+### Optimization Features
+- **Minimal Dependencies**: Only essential external resources
+- **Efficient CSS**: Optimized selectors and minimal redundancy
+- **Font Display**: Swap for faster text rendering
+- **Image Optimization**: Proper sizing and modern formats
+
+### Best Practices
+- Semantic HTML structure
+- Progressive enhancement
+- Mobile-first CSS
+- Accessible by default
+
+## 🤝 Contributing
+
+### Development Setup
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+### Code Style
+- Use consistent indentation (2 spaces)
+- Follow BEM naming conventions
+- Write semantic HTML
+- Maintain accessibility standards
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🆘 Support
+
+### Getting Help
+- **Documentation**: Comprehensive README and inline comments
+- **Issues**: GitHub issue tracker for bug reports
+- **Discussions**: GitHub discussions for questions and ideas
+
+### Troubleshooting
+- Check PHP error logs
+- Verify file permissions
+- Ensure HTTPS is configured
+- Test with different browsers
+
+---
+
+**QiBlog** - A modern, beautiful, and secure flat-file CMS that prioritizes user experience and developer happiness. Built with ❤️ and attention to detail.
