@@ -1,0 +1,139 @@
+/* ===================================
+   QiBlog Design System - Light Theme
+   Default light theme styles
+   =================================== */
+
+/* Light theme is the default, so most styles are in variables.css */
+/* This file contains light theme specific overrides and enhancements */
+
+:root {
+  /* Light theme specific color adjustments */
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #FAF7ED;
+  --color-bg-tertiary: #F8F4E1;
+
+  --color-text-primary: #543310;
+  --color-text-secondary: #74512D;
+  --color-text-muted: #8B6914;
+
+  --color-border-light: #E6DDD4;
+  --color-border-medium: #C4A484;
+  --color-border-dark: #8B6914;
+
+  /* Light theme shadows with more subtle appearance */
+  --shadow-sm: 0 1px 2px 0 rgba(84, 51, 16, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(84, 51, 16, 0.1), 0 2px 4px -1px rgba(84, 51, 16, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(84, 51, 16, 0.1), 0 4px 6px -2px rgba(84, 51, 16, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(84, 51, 16, 0.1), 0 10px 10px -5px rgba(84, 51, 16, 0.04);
+}
+
+/* Light theme specific component styles */
+.theme-light {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+/* Enhanced gradients for light theme */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--color-cream-light) 0%, var(--color-bg-primary) 100%);
+}
+
+.gradient-card {
+  background: linear-gradient(145deg, var(--color-bg-primary), var(--color-cream-light));
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light theme specific button enhancements */
+.btn--primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  box-shadow: 0 2px 4px rgba(139, 105, 20, 0.2);
+}
+
+.btn--primary:hover {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  box-shadow: 0 4px 8px rgba(139, 105, 20, 0.3);
+}
+
+/* Light theme card enhancements */
+.card {
+  background: linear-gradient(145deg, var(--color-bg-primary), var(--color-cream-light));
+  border: 1px solid var(--color-border-light);
+}
+
+.card:hover {
+  background: linear-gradient(145deg, var(--color-cream-light), var(--color-bg-primary));
+}
+
+/* Light theme form enhancements */
+.form-input,
+.form-textarea,
+.form-select {
+  background: linear-gradient(145deg, var(--color-bg-primary), var(--color-cream-light));
+  border-color: var(--color-border-medium);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  background: linear-gradient(145deg, var(--color-cream-light), var(--color-bg-primary));
+  box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.1);
+}
+
+/* Light theme navigation enhancements */
+.nav {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(230, 221, 212, 0.5);
+}
+
+/* Light theme specific animations */
+@keyframes light-theme-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(139, 105, 20, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(139, 105, 20, 0.4);
+  }
+}
+
+.animate-glow {
+  animation: light-theme-glow 2s ease-in-out infinite;
+}
+
+/* Light theme specific utilities */
+.text-shadow-sm {
+  text-shadow: 0 1px 2px rgba(84, 51, 16, 0.1);
+}
+
+.text-shadow-md {
+  text-shadow: 0 2px 4px rgba(84, 51, 16, 0.15);
+}
+
+.box-glow {
+  box-shadow: 0 0 20px rgba(139, 105, 20, 0.1);
+}
+
+/* Print styles for light theme */
+@media print {
+  .theme-light {
+    background: white;
+    color: black;
+  }
+
+  .btn {
+    border: 1px solid black;
+    background: transparent;
+    color: black;
+  }
+
+  .card {
+    border: 1px solid black;
+    box-shadow: none;
+  }
+}

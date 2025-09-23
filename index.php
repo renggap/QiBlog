@@ -11,68 +11,230 @@ $posts = $result['posts'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php echo generate_meta_tags(); ?>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <title><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?> - Home</title>
 </head>
-<body>
-    <section class="hero is-dark is-bold">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <h1 class="title"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></h1>
-                <p class="subtitle">Latest Posts</p>
+<body class="theme-transition">
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Enhanced Hero Section -->
+    <section class="hero animate-fade-in-up">
+        <div class="hero__content">
+            <h1 class="hero__title animate-fade-in-up" style="animation-delay: 200ms;">
+                <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?>
+            </h1>
+            <p class="hero__subtitle animate-fade-in-up" style="animation-delay: 400ms;">
+                Discover amazing stories and insights
+            </p>
+            <div class="animate-fade-in-up" style="animation-delay: 600ms;">
+                <a href="admin/login.php" class="btn btn--accent btn--lg">
+                    <span class="icon">✨</span>
+                    Get Started
+                </a>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <!-- Main Content -->
+    <main id="main-content" class="section">
         <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-8">
-                <?php foreach ($posts as $post): ?>
-                    <div class="card mb-4">
-                        <div class="card-content">
-                            <h2 class="title is-4"><a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?></a></h2>
-                            <p class="content"><?php echo htmlspecialchars($post['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p class="is-size-7 has-text-grey"><?php echo htmlspecialchars(date('F j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?> | Categories: <?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?> | Tags: <?php echo htmlspecialchars(implode(', ', $post['tags']), ENT_QUOTES, 'UTF-8'); ?></p>
-                            <a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html" class="button is-primary">Read More</a>
+            <?php if (empty($posts)): ?>
+                <!-- Empty State -->
+                <div class="animate-fade-in-up">
+                    <div class="card card--lg mx-auto" style="max-width: 600px;">
+                        <div class="card__content text-center">
+                            <div class="text-4xl mb-lg">📝</div>
+                            <h2 class="text-2xl font-semibold mb-md">No posts yet</h2>
+                            <p class="text-muted mb-lg">
+                                Be the first to share your thoughts and ideas with the world.
+                            </p>
+                            <a href="admin/login.php" class="btn btn--primary btn--lg">
+                                <span class="icon">🚀</span>
+                                Create Your First Post
+                            </a>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <!-- Posts Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg animate-fade-in-up" style="animation-delay: 200ms;">
+                    <?php foreach ($posts as $index => $post): ?>
+                        <article class="post-card animate-fade-in-up" style="animation-delay: <?php echo 300 + ($index * 100); ?>ms;">
+                            <div class="post-card__content">
+                                <h2 class="post-card__title">
+                                    <a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html">
+                                        <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </a>
+                                </h2>
 
-                <?php if (empty($posts)): ?>
-                    <div class="has-text-centered">
-                        <p>No posts yet. <a href="admin/login.php">Login</a> to create your first post.</p>
-                    </div>
-                <?php endif; ?>
+                                <p class="post-card__excerpt">
+                                    <?php echo htmlspecialchars($post['excerpt'], ENT_QUOTES, 'UTF-8'); ?>
+                                </p>
 
+                                <div class="post-card__meta">
+                                    <time datetime="<?php echo htmlspecialchars($post['date'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        📅 <?php echo htmlspecialchars(date('M j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?>
+                                    </time>
+
+                                    <?php if (!empty($post['categories'])): ?>
+                                        <span class="post-card__categories">
+                                            🏷️ <?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="mt-lg">
+                                    <a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+                                       class="btn btn--primary btn--sm">
+                                        Read More →
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+
+                <!-- Enhanced Pagination -->
                 <?php if ($result['total_pages'] > 1): ?>
-                    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                    <nav class="pagination animate-fade-in-up" style="animation-delay: 800ms;" role="navigation" aria-label="pagination">
                         <?php if ($page > 1): ?>
-                            <a class="pagination-previous" href="?page=<?php echo $page - 1; ?>">Previous</a>
+                            <a href="?page=<?php echo $page - 1; ?>"
+                               class="pagination__item"
+                               aria-label="Previous page">
+                                ← Previous
+                            </a>
+                        <?php endif; ?>
+
+                        <?php
+                        $start_page = max(1, $page - 2);
+                        $end_page = min($result['total_pages'], $page + 2);
+
+                        if ($start_page > 1): ?>
+                            <a href="?page=1" class="pagination__item">1</a>
+                            <?php if ($start_page > 2): ?>
+                                <span class="pagination__ellipsis">...</span>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php for ($i = $start_page; $i <= $end_page; $i++): ?>
+                            <a href="?page=<?php echo $i; ?>"
+                               class="pagination__item <?php echo $i == $page ? 'pagination__item--active' : ''; ?>"
+                               aria-label="Page <?php echo $i; ?>"
+                               aria-current="<?php echo $i == $page ? 'page' : 'false'; ?>">
+                                <?php echo $i; ?>
+                            </a>
+                        <?php endfor; ?>
+
+                        <?php if ($end_page < $result['total_pages']): ?>
+                            <?php if ($end_page < $result['total_pages'] - 1): ?>
+                                <span class="pagination__ellipsis">...</span>
+                            <?php endif; ?>
+                            <a href="?page=<?php echo $result['total_pages']; ?>" class="pagination__item">
+                                <?php echo $result['total_pages']; ?>
+                            </a>
                         <?php endif; ?>
 
                         <?php if ($page < $result['total_pages']): ?>
-                            <a class="pagination-next" href="?page=<?php echo $page + 1; ?>">Next</a>
+                            <a href="?page=<?php echo $page + 1; ?>"
+                               class="pagination__item"
+                               aria-label="Next page">
+                                Next →
+                            </a>
                         <?php endif; ?>
-
-                        <ul class="pagination-list">
-                            <?php for ($i = 1; $i <= $result['total_pages']; $i++): ?>
-                                <li>
-                                    <a class="pagination-link <?php echo $i == $page ? 'is-current' : ''; ?>" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                                </li>
-                            <?php endfor; ?>
-                        </ul>
                     </nav>
                 <?php endif; ?>
-            </div>
+            <?php endif; ?>
         </div>
-    </section>
+    </main>
 
+    <!-- Enhanced Footer -->
     <footer class="footer">
-        <div class="content has-text-centered">
-            <p>Powered by <a href="https://github.com/renggap/QiBlog" target="_blank">QiBlog</a> Flat-File CMS</p>
+        <div class="container">
+            <div class="text-center">
+                <div class="mb-lg">
+                    <h3 class="text-lg font-semibold mb-sm">Powered by QiBlog</h3>
+                    <p class="text-muted">
+                        A modern, secure flat-file CMS built with PHP
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-md mb-lg">
+                    <a href="https://github.com/renggap/QiBlog"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn btn--ghost btn--sm">
+                        <span class="icon">📖</span>
+                        Documentation
+                    </a>
+                    <a href="admin/login.php"
+                       class="btn btn--ghost btn--sm">
+                        <span class="icon">⚙️</span>
+                        Admin Panel
+                    </a>
+                    <a href="sitemap.xml"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn btn--ghost btn--sm">
+                        <span class="icon">🗺️</span>
+                        Sitemap
+                    </a>
+                </div>
+
+                <div class="pt-lg border-t border-border-light">
+                    <p class="text-sm text-muted">
+                        © <?php echo date('Y'); ?> <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?>.
+                        Built with ❤️ using modern web technologies.
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <!-- Theme Toggle Script -->
+    <script>
+        // Simple theme toggle functionality
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        const body = document.body;
+
+        // Add theme class based on user preference
+        if (prefersDark.matches) {
+            body.classList.add('theme-dark');
+        }
+
+        // Listen for system theme changes
+        prefersDark.addEventListener('change', (e) => {
+            body.classList.toggle('theme-dark', e.matches);
+        });
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading states for buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.href && !this.href.includes('#')) {
+                    this.classList.add('btn--loading');
+                    setTimeout(() => {
+                        this.classList.remove('btn--loading');
+                    }, 2000);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
