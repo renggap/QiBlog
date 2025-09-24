@@ -2,6 +2,8 @@
 require_once 'includes/functions.php';
 
 $page = (int)($_GET['page'] ?? 1);
+
+// Get all posts for homepage
 $result = get_posts($page, 15); // Show 15 posts per page
 $posts = $result['posts'];
 ?>
@@ -14,12 +16,10 @@ $posts = $result['posts'];
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <title><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?> - Home</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <title><?php echo htmlspecialchars(SITE_TITLE . " - Home", ENT_QUOTES, 'UTF-8'); ?></title>
 </head>
 <body class="theme-transition">
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Enhanced Hero Section -->
     <section class="hero animate-fade-in-up">
@@ -28,14 +28,8 @@ $posts = $result['posts'];
                 <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?>
             </h1>
             <p class="hero__subtitle animate-fade-in-up" style="animation-delay: 400ms;">
-                Discover amazing stories and insights
+                <?php echo htmlspecialchars("Discover amazing stories and insights", ENT_QUOTES, 'UTF-8'); ?>
             </p>
-            <div class="animate-fade-in-up" style="animation-delay: 600ms;">
-                <a href="admin/login.php" class="btn btn--accent btn--lg">
-                    <span class="icon">✨</span>
-                    Get Started
-                </a>
-            </div>
         </div>
     </section>
 
@@ -48,7 +42,9 @@ $posts = $result['posts'];
                     <div class="card card--lg mx-auto" style="max-width: 600px;">
                         <div class="card__content text-center">
                             <div class="text-4xl mb-lg">📝</div>
-                            <h2 class="text-2xl font-semibold mb-md">No posts yet</h2>
+                            <h2 class="text-2xl font-semibold mb-md">
+                                No posts yet
+                            </h2>
                             <p class="text-muted mb-lg">
                                 Be the first to share your thoughts and ideas with the world.
                             </p>
@@ -66,7 +62,7 @@ $posts = $result['posts'];
                         <article class="post-card animate-fade-in-up" style="animation-delay: <?php echo 300 + ($index * 100); ?>ms;">
                             <div class="post-card__content">
                                 <h2 class="post-card__title">
-                                    <a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html">
+                                    <a href="<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html">
                                         <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
                                     </a>
                                 </h2>
@@ -88,7 +84,7 @@ $posts = $result['posts'];
                                 </div>
 
                                 <div class="mt-lg">
-                                    <a href="post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+                                    <a href="<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
                                        class="btn btn--primary btn--sm">
                                         Read More →
                                     </a>
@@ -162,27 +158,7 @@ $posts = $result['posts'];
                     </p>
                 </div>
 
-                <div class="flex flex-wrap justify-center gap-md mb-lg">
-                    <a href="https://github.com/renggap/QiBlog"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="btn btn--ghost btn--sm">
-                        <span class="icon">📖</span>
-                        Documentation
-                    </a>
-                    <a href="admin/login.php"
-                       class="btn btn--ghost btn--sm">
-                        <span class="icon">⚙️</span>
-                        Admin Panel
-                    </a>
-                    <a href="sitemap.xml"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="btn btn--ghost btn--sm">
-                        <span class="icon">🗺️</span>
-                        Sitemap
-                    </a>
-                </div>
+                <!-- Footer links removed as requested -->
 
                 <div class="pt-lg border-t border-border-light">
                     <p class="text-sm text-muted">

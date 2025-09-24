@@ -91,7 +91,8 @@ a:focus {
 /* Text Colors */
 .text-primary { color: var(--color-text-primary); }
 .text-secondary { color: var(--color-text-secondary); }
-.text-muted { color: var(--color-text-muted); }
+/* .text-muted { color: var(--color-text-muted); } */
+.text-muted { color: var(--color-text-primary); }
 .text-inverse { color: var(--color-text-inverse); }
 .text-accent { color: var(--color-accent); }
 .text-success { color: var(--color-success); }

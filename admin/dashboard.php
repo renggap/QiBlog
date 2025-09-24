@@ -25,15 +25,12 @@ if (isset($_GET['delete'])) {
 $total_posts = count(get_posts(1, 1000)['posts']);
 $recent_posts = array_slice($posts, 0, 5);
 $categories = [];
-$tags = [];
 
 foreach ($posts as $post) {
     $categories = array_merge($categories, $post['categories']);
-    $tags = array_merge($tags, $post['tags']);
 }
 
 $unique_categories = array_unique($categories);
-$unique_tags = array_unique($tags);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,8 +44,6 @@ $unique_tags = array_unique($tags);
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="theme-transition admin-dashboard">
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Admin Navigation -->
     <nav class="nav">
@@ -104,13 +99,7 @@ $unique_tags = array_unique($tags);
                 <div class="stats-card">
                     <div class="stats-card__number"><?php echo count($unique_categories); ?></div>
                     <div class="stats-card__label">Categories</div>
-                    <div class="stats-card__icon">🏷️</div>
-                </div>
-
-                <div class="stats-card">
-                    <div class="stats-card__number"><?php echo count($unique_tags); ?></div>
-                    <div class="stats-card__label">Tags</div>
-                    <div class="stats-card__icon">🔖</div>
+                    <div class="stats-card__icon">📂</div>
                 </div>
 
                 <div class="stats-card">
@@ -131,10 +120,6 @@ $unique_tags = array_unique($tags);
                     <a href="../index.php" class="btn btn--secondary btn--lg" target="_blank">
                         <span class="icon">🌐</span>
                         View Site
-                    </a>
-                    <a href="../sitemap.xml" class="btn btn--secondary btn--lg" target="_blank">
-                        <span class="icon">🗺️</span>
-                        Sitemap
                     </a>
                 </div>
             </div>

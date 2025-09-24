@@ -9,8 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = [
             'title' => $_POST['title'],
             'content' => $_POST['content'],
-            'categories' => explode(',', $_POST['categories']),
-            'tags' => explode(',', $_POST['tags'])
+            'categories' => array_filter(array_map('trim', explode(',', $_POST['categories'] ?? ''))),
+            'tags' => [] // Remove tags functionality
         ];
 
         if (save_post($data)) {
@@ -30,43 +30,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post - <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?> Admin</a>
+    <nav class="nav">
+        <div class="nav__container">
+            <a href="dashboard.php" class="nav__brand">
+                <span class="nav__logo">⚙️</span>
+                <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?> Admin
+            </a>
+            <div class="nav__actions">
+                <a href="dashboard.php" class="btn btn--ghost btn--sm">
+                    <span class="icon">←</span>
+                    Back to Dashboard
+                </a>
+            </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <h1>Create New Post</h1>
-        <?php if ($message): ?>
-            <div class="alert alert-danger"><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></div>
-        <?php endif; ?>
+    <main class="section section--lg">
+        <div class="container">
+            <div class="animate-fade-in-up">
+                <h1 class="text-3xl font-bold mb-lg">Create New Post</h1>
 
-        <form method="post">
-            <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <?php if ($message): ?>
+                    <div class="notification notification--error mb-lg">
+                        <div class="flex items-center gap-sm">
+                            <span class="icon">❌</span>
+                            <span><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <form method="post" class="card">
+                    <div class="card__content">
+                        <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+
+                        <div class="form-group">
+                            <label for="title" class="form-label">Title *</label>
+                            <input type="text" class="form-input" id="title" name="title" required
+                                   placeholder="Enter your post title...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categories" class="form-label">Categories</label>
+                            <input type="text" class="form-input" id="categories" name="categories"
+                                   placeholder="e.g., Technology, Web Development, PHP (comma-separated)">
+                            <small class="text-muted">Separate multiple categories with commas</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content" class="form-label">Content *</label>
+                            <textarea class="form-textarea" id="content" name="content"
+                                      placeholder="Write your post content here..." rows="20"></textarea>
+                        </div>
+
+                        <div class="flex gap-md">
+                            <button type="submit" class="btn btn--primary btn--lg">
+                                <span class="icon">✨</span>
+                                Create Post
+                            </button>
+                            <a href="dashboard.php" class="btn btn--ghost btn--lg">
+                                <span class="icon">←</span>
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="categories" class="form-label">Categories (comma-separated)</label>
-                <input type="text" class="form-control" id="categories" name="categories">
-            </div>
-            <div class="mb-3">
-                <label for="tags" class="form-label">Tags (comma-separated)</label>
-                <input type="text" class="form-control" id="tags" name="tags">
-            </div>
-            <div class="mb-3">
-                <label for="content" class="form-label">Content</label>
-                <textarea class="form-control" id="content" name="content"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Create Post</button>
-            <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
-        </form>
+        </div>
+    </main>
         <script>
             ClassicEditor
                 .create(document.querySelector('#content'), {
@@ -78,7 +115,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 .catch(error => {
                     console.error(error);
                 });
+
+            // Theme toggle functionality
+            const themeToggle = document.querySelector('.theme-toggle');
+            const body = document.body;
+
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('admin-theme');
+            if (savedTheme) {
+                body.className = savedTheme === 'dark' ? 'theme-dark' : '';
+            }
+
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const isDark = body.classList.toggle('theme-dark');
+                    localStorage.setItem('admin-theme', isDark ? 'dark' : 'light');
+                });
+            }
         </script>
+
+        <style>
+            .notification {
+                padding: var(--space-lg);
+                border-radius: var(--radius-md);
+                margin-bottom: var(--space-lg);
+            }
+
+            .notification--error {
+                background-color: rgba(160, 82, 45, 0.1);
+                border: 1px solid var(--color-danger);
+                color: var(--color-danger);
+            }
+
+            .form-group {
+                margin-bottom: var(--space-xl);
+            }
+
+            .form-label {
+                display: block;
+                margin-bottom: var(--space-sm);
+                font-weight: var(--font-weight-medium);
+                color: var(--color-text-primary);
+            }
+
+            .form-input, .form-textarea {
+                width: 100%;
+                padding: var(--space-md);
+                border: 1px solid var(--color-border-medium);
+                border-radius: var(--radius-md);
+                font-size: var(--text-base);
+                background-color: var(--color-bg-primary);
+                color: var(--color-text-primary);
+                transition: border-color var(--transition-fast);
+            }
+
+            .form-input:focus, .form-textarea:focus {
+                outline: none;
+                border-color: var(--color-primary);
+                box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.1);
+            }
+
+            .form-textarea {
+                min-height: 300px;
+                resize: vertical;
+                font-family: var(--font-family-primary);
+            }
+
+            .text-muted {
+                color: var(--color-text-muted);
+                font-size: var(--text-sm);
+            }
+        </style>
     </div>
 </body>
 </html>

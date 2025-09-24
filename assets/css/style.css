@@ -140,10 +140,13 @@ a:hover {
 .hero {
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
     color: var(--color-text-inverse);
-    padding: var(--space-4xl) 0;
+    padding: var(--space-2xl) 0;
     text-align: center;
     position: relative;
     overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
 }
 
 .hero::before {
@@ -169,7 +172,8 @@ a:hover {
     font-size: var(--text-4xl);
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--space-lg);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: #FFFFFF;
 }
 
 .hero__subtitle {
@@ -197,6 +201,7 @@ a:hover {
     max-width: var(--container-xl);
     margin: 0 auto;
     padding: 0 var(--space-lg);
+    color: var(--color-cream);
 }
 
 /* Footer Enhancement */
@@ -302,7 +307,8 @@ a:hover {
 
 @media (max-width: 768px) {
     .hero {
-        padding: var(--space-2xl) 0;
+        padding: var(--space-xl) 0;
+        min-height: 160px;
     }
 
     .hero__title {

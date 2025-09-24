@@ -2,8 +2,11 @@
 require_once 'includes/functions.php';
 
 $post = null;
-if (isset($_GET['slug'])) {
-    $post = get_post_by_slug($_GET['slug']);
+$category = $_GET['category'] ?? null;
+$slug = $_GET['slug'] ?? null;
+
+if ($slug) {
+    $post = get_post_by_slug($slug);
 }
 
 if (!$post) {
@@ -18,7 +21,7 @@ if (!$post) {
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="/assets/css/style.css">
     </head>
     <body class="theme-transition">
         <div class="hero">
@@ -46,7 +49,7 @@ if (!$post) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 
     <!-- Enhanced Structured Data -->
     <script type="application/ld+json">
@@ -70,18 +73,16 @@ if (!$post) {
         },
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "<?php echo SITE_URL; ?>/post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+            "@id": "<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
         },
         "articleSection": "<?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?>",
-        "keywords": "<?php echo htmlspecialchars(implode(', ', $post['tags']), ENT_QUOTES, 'UTF-8'); ?>"
+        "keywords": "<?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?>"
     }
     </script>
 
     <title><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?> | <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></title>
 </head>
 <body class="theme-transition">
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Reading Progress Bar -->
     <div class="reading-progress">
@@ -91,13 +92,13 @@ if (!$post) {
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav__container">
-            <a href="index.php" class="nav__brand">
+            <a href="/index.php" class="nav__brand">
                 <span class="nav__logo">📖</span>
                 <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?>
             </a>
 
             <div class="nav__actions">
-                <a href="index.php" class="btn btn--ghost btn--sm">
+                <a href="/index.php" class="btn btn--ghost btn--sm">
                     <span class="icon">🏠</span>
                     Home
                 </a>
@@ -108,27 +109,73 @@ if (!$post) {
         </div>
     </nav>
 
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumbs" aria-label="breadcrumb">
-        <div class="breadcrumbs__list">
-            <li class="breadcrumbs__item">
-                <a href="index.php" class="breadcrumbs__link">Home</a>
-            </li>
-            <li class="breadcrumbs__separator" aria-hidden="true">→</li>
-            <li class="breadcrumbs__item">
-                <span class="breadcrumbs__current" aria-current="page">
-                    <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
-                </span>
-            </li>
-        </div>
-    </nav>
-
     <!-- Main Content -->
     <main id="main-content" class="section section--lg">
         <article class="container">
             <div class="mx-auto" style="max-width: 800px;">
+                <!-- Breadcrumbs with Schema Markup -->
+                <nav class="breadcrumbs mb-lg animate-fade-in-up" aria-label="breadcrumb">
+                    <div class="breadcrumbs__list">
+                        <li class="breadcrumbs__item">
+                            <a href="/index.php" class="breadcrumbs__link">Home</a>
+                        </li>
+                        <li class="breadcrumbs__separator" aria-hidden="true">→</li>
+                        <?php if (!empty($post['categories'])): ?>
+                            <?php foreach ($post['categories'] as $index => $category): ?>
+                                <?php if ($index > 0): ?>
+                                    <li class="breadcrumbs__separator" aria-hidden="true">→</li>
+                                <?php endif; ?>
+                                <li class="breadcrumbs__item">
+                                    <a href="/<?php echo urlencode($category); ?>/"
+                                       class="breadcrumbs__link">
+                                        <?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                            <li class="breadcrumbs__separator" aria-hidden="true">→</li>
+                        <?php endif; ?>
+                        <li class="breadcrumbs__item">
+                            <span class="breadcrumbs__current" aria-current="page">
+                                <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
+                            </span>
+                        </li>
+                    </div>
+                </nav>
+
+                <!-- Enhanced Structured Data for Breadcrumbs -->
+                <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "<?php echo SITE_URL; ?>/"
+                        }
+                        <?php if (!empty($post['categories'])): ?>
+                        <?php foreach ($post['categories'] as $index => $category): ?>
+                        ,{
+                            "@type": "ListItem",
+                            "position": <?php echo 2 + $index; ?>,
+                            "name": "<?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>",
+                            "item": "<?php echo SITE_URL; ?>/<?php echo urlencode($category); ?>/"
+                        }
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                        ,{
+                            "@type": "ListItem",
+                            "position": <?php echo 2 + count($post['categories']); ?>,
+                            "name": "<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>",
+                            "item": "<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+                        }
+                    ]
+                }
+                </script>
+
                 <!-- Article Header -->
-                <header class="mb-4xl animate-fade-in-up">
+                <header class="mb-4xl animate-fade-in-up" style="animation-delay: 200ms;">
                     <h1 class="text-4xl font-bold mb-lg leading-tight">
                         <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
                     </h1>
@@ -137,29 +184,7 @@ if (!$post) {
                         <time datetime="<?php echo htmlspecialchars($post['date'], ENT_QUOTES, 'UTF-8'); ?>">
                             📅 <?php echo htmlspecialchars(date('F j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?>
                         </time>
-
-                        <?php if (!empty($post['categories'])): ?>
-                            <span class="flex items-center gap-sm">
-                                🏷️
-                                <?php foreach ($post['categories'] as $category): ?>
-                                    <span class="px-sm py-xs bg-secondary text-sm rounded">
-                                        <?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </span>
-                        <?php endif; ?>
                     </div>
-
-                    <?php if (!empty($post['tags'])): ?>
-                        <div class="flex flex-wrap gap-sm">
-                            <?php foreach ($post['tags'] as $tag): ?>
-                                <a href="?tag=<?php echo urlencode($tag); ?>"
-                                   class="btn btn--ghost btn--xs">
-                                    #<?php echo htmlspecialchars($tag, ENT_QUOTES, 'UTF-8'); ?>
-                                </a>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php endif; ?>
                 </header>
 
                 <!-- Article Content -->
@@ -172,48 +197,50 @@ if (!$post) {
                 </div>
 
                 <!-- Article Footer -->
-                <footer class="mt-4xl pt-4xl border-t border-border-light animate-fade-in-up" style="animation-delay: 400ms;">
-                    <!-- Social Sharing -->
-                    <div class="mb-4xl">
-                        <h3 class="text-xl font-semibold mb-lg">Share this article</h3>
-                        <div class="flex flex-wrap gap-md">
-                            <button class="share-btn btn btn--secondary btn--sm"
-                                    data-url="<?php echo SITE_URL; ?>/post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
-                                    data-title="<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>"
-                                    onclick="shareArticle('twitter', this.dataset.url, this.dataset.title)">
-                                <span class="icon">🐦</span>
-                                Twitter
-                            </button>
-                            <button class="share-btn btn btn--secondary btn--sm"
-                                    data-url="<?php echo SITE_URL; ?>/post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
-                                    data-title="<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>"
-                                    onclick="shareArticle('facebook', this.dataset.url, this.dataset.title)">
-                                <span class="icon">📘</span>
-                                Facebook
-                            </button>
-                            <button class="share-btn btn btn--secondary btn--sm"
-                                    data-url="<?php echo SITE_URL; ?>/post/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
-                                    onclick="copyToClipboard(this.dataset.url)">
-                                <span class="icon">🔗</span>
-                                Copy Link
-                            </button>
-                        </div>
-                    </div>
+                 <footer class="mt-4xl pt-4xl border-t border-border-light animate-fade-in-up" style="animation-delay: 400ms;">
+                     <!-- Social Sharing -->
+                     <div class="mb-4xl">
+                         <h3 class="text-xl font-semibold mb-lg">Share this article</h3>
+                         <div class="flex flex-wrap gap-md">
+                             <button class="share-btn btn btn--secondary btn--sm"
+                                     data-url="<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+                                     data-title="<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>"
+                                     onclick="shareArticle('twitter', this.dataset.url, this.dataset.title)">
+                                 <span class="icon">🐦</span>
+                                 Twitter
+                             </button>
+                             <button class="share-btn btn btn--secondary btn--sm"
+                                     data-url="<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+                                     data-title="<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>"
+                                     onclick="shareArticle('facebook', this.dataset.url, this.dataset.title)">
+                                 <span class="icon">📘</span>
+                                 Facebook
+                             </button>
+                             <button class="share-btn btn btn--secondary btn--sm"
+                                     data-url="<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+                                     onclick="copyToClipboard(this.dataset.url)">
+                                 <span class="icon">🔗</span>
+                                 Copy Link
+                             </button>
+                         </div>
+                     </div>
 
-                    <!-- Navigation -->
-                    <div class="flex justify-between items-center">
-                        <a href="index.php" class="btn btn--ghost btn--sm">
-                            <span class="icon">←</span>
-                            Back to Home
-                        </a>
+                     <!-- Navigation -->
+                     <div class="mt-4xl pt-4xl border-t border-border-light">
+                         <div class="flex justify-between items-center">
+                             <a href="/index.php" class="btn btn--ghost btn--sm">
+                                 <span class="icon">←</span>
+                                 Back to Home
+                             </a>
 
-                        <div class="flex gap-sm">
-                            <button class="theme-toggle btn btn--ghost btn--sm" aria-label="Toggle dark mode">
-                                <span class="theme-icon">🌙</span>
-                            </button>
-                        </div>
-                    </div>
-                </footer>
+                             <div class="flex gap-sm">
+                                 <button class="theme-toggle btn btn--ghost btn--sm" aria-label="Toggle dark mode">
+                                     <span class="theme-icon">🌙</span>
+                                 </button>
+                             </div>
+                         </div>
+                     </div>
+                 </footer>
             </div>
         </article>
     </main>
@@ -229,27 +256,7 @@ if (!$post) {
                     </p>
                 </div>
 
-                <div class="flex flex-wrap justify-center gap-md mb-lg">
-                    <a href="https://github.com/renggap/QiBlog"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="btn btn--ghost btn--sm">
-                        <span class="icon">📖</span>
-                        Documentation
-                    </a>
-                    <a href="admin/login.php"
-                       class="btn btn--ghost btn--sm">
-                        <span class="icon">⚙️</span>
-                        Admin Panel
-                    </a>
-                    <a href="sitemap.xml"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="btn btn--ghost btn--sm">
-                        <span class="icon">🗺️</span>
-                        Sitemap
-                    </a>
-                </div>
+                <!-- Footer links removed as requested -->
 
                 <div class="pt-lg border-t border-border-light">
                     <p class="text-sm text-muted">

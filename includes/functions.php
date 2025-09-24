@@ -88,6 +88,49 @@ function get_post_by_slug($slug) {
     return null;
 }
 
+function get_posts_by_category($category, $page = 1, $per_page = null) {
+    $all_files = glob(POSTS_DIR . '*' . POSTS_EXT);
+    rsort($all_files); // Newest first
+
+    // Filter posts by category
+    $filtered_files = [];
+    foreach ($all_files as $file) {
+        $post = parse_post($file);
+        if ($post && in_array($category, $post['categories'])) {
+            $filtered_files[] = $file;
+        }
+    }
+
+    $total = count($filtered_files);
+
+    if ($per_page === null) {
+        $files = $filtered_files;
+        $total_pages = 1;
+        $per_page = $total;
+    } else {
+        $offset = ($page - 1) * $per_page;
+        $files = array_slice($filtered_files, $offset, $per_page);
+        $total_pages = ceil($total / $per_page);
+    }
+
+    $posts = [];
+    foreach ($files as $file) {
+        $post = parse_post($file);
+        if ($post) {
+            $posts[] = $post;
+        }
+    }
+
+    return [
+        'posts' => $posts,
+        'total' => $total,
+        'page' => $page,
+        'per_page' => $per_page,
+        'total_pages' => $total_pages,
+        'category' => $category
+    ];
+}
+
 function parse_post($file) {
     $content = file_get_contents($file);
     if (!$content) return null;
@@ -182,29 +225,56 @@ if (!function_exists('yaml_emit')) {
 }
 
 // SEO functions
-function generate_meta_tags($post = null) {
-    $title = $post ? htmlspecialchars($post['title'] . ' | ' . SITE_TITLE, ENT_QUOTES, 'UTF-8') : htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8');
-    $description = $post ? htmlspecialchars($post['excerpt'], ENT_QUOTES, 'UTF-8') : htmlspecialchars('Jendela Info Blog', ENT_QUOTES, 'UTF-8');
-    $url = $post ? htmlspecialchars(SITE_URL . '/post/' . $post['slug'] . '.html', ENT_QUOTES, 'UTF-8') : htmlspecialchars(SITE_URL, ENT_QUOTES, 'UTF-8');
-    $image = htmlspecialchars(SITE_URL . '/assets/images/default.jpg', ENT_QUOTES, 'UTF-8'); // Add default image
+function generate_meta_tags($post = null, $category = null) {
+    if ($category) {
+        // Category page meta tags
+        $title = htmlspecialchars(ucfirst($category) . ' | ' . SITE_TITLE, ENT_QUOTES, 'UTF-8');
+        $description = htmlspecialchars('Browse all posts in the ' . $category . ' category on ' . SITE_TITLE, ENT_QUOTES, 'UTF-8');
+        $url = htmlspecialchars(SITE_URL . '/' . urlencode($category) . '/', ENT_QUOTES, 'UTF-8');
+        $image = htmlspecialchars(SITE_URL . '/assets/images/default.jpg', ENT_QUOTES, 'UTF-8');
 
-    $meta = '<title>' . $title . '</title>' . "\n";
-    $meta .= '<meta name="description" content="' . $description . '">' . "\n";
-    $meta .= '<meta name="keywords" content="' . htmlspecialchars(implode(', ', $post['tags'] ?? []), ENT_QUOTES, 'UTF-8') . '">' . "\n";
-    $meta .= '<link rel="canonical" href="' . $url . '">' . "\n";
+        $meta = '<title>' . $title . '</title>' . "\n";
+        $meta .= '<meta name="description" content="' . $description . '">' . "\n";
+        $meta .= '<meta name="keywords" content="' . htmlspecialchars($category, ENT_QUOTES, 'UTF-8') . '">' . "\n";
+        $meta .= '<link rel="canonical" href="' . $url . '">' . "\n";
 
-    // Open Graph
-    $meta .= '<meta property="og:title" content="' . $title . '">' . "\n";
-    $meta .= '<meta property="og:description" content="' . $description . '">' . "\n";
-    $meta .= '<meta property="og:url" content="' . $url . '">' . "\n";
-    $meta .= '<meta property="og:type" content="' . ($post ? 'article' : 'website') . '">' . "\n";
-    $meta .= '<meta property="og:image" content="' . $image . '">' . "\n";
+        // Open Graph
+        $meta .= '<meta property="og:title" content="' . $title . '">' . "\n";
+        $meta .= '<meta property="og:description" content="' . $description . '">' . "\n";
+        $meta .= '<meta property="og:url" content="' . $url . '">' . "\n";
+        $meta .= '<meta property="og:type" content="website">' . "\n";
+        $meta .= '<meta property="og:image" content="' . $image . '">' . "\n";
 
-    // Twitter
-    $meta .= '<meta name="twitter:card" content="summary_large_image">' . "\n";
-    $meta .= '<meta name="twitter:title" content="' . $title . '">' . "\n";
-    $meta .= '<meta name="twitter:description" content="' . $description . '">' . "\n";
-    $meta .= '<meta name="twitter:image" content="' . $image . '">' . "\n";
+        // Twitter
+        $meta .= '<meta name="twitter:card" content="summary_large_image">' . "\n";
+        $meta .= '<meta name="twitter:title" content="' . $title . '">' . "\n";
+        $meta .= '<meta name="twitter:description" content="' . $description . '">' . "\n";
+        $meta .= '<meta name="twitter:image" content="' . $image . '">' . "\n";
+    } else {
+        // Post or homepage meta tags
+        $title = $post ? htmlspecialchars($post['title'] . ' | ' . SITE_TITLE, ENT_QUOTES, 'UTF-8') : htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8');
+        $description = $post ? htmlspecialchars($post['excerpt'], ENT_QUOTES, 'UTF-8') : htmlspecialchars('Jendela Info Blog', ENT_QUOTES, 'UTF-8');
+        $url = $post ? htmlspecialchars(SITE_URL . '/' . urlencode($post['categories'][0] ?? '') . '/' . $post['slug'] . '.html', ENT_QUOTES, 'UTF-8') : htmlspecialchars(SITE_URL, ENT_QUOTES, 'UTF-8');
+        $image = htmlspecialchars(SITE_URL . '/assets/images/default.jpg', ENT_QUOTES, 'UTF-8');
+
+        $meta = '<title>' . $title . '</title>' . "\n";
+        $meta .= '<meta name="description" content="' . $description . '">' . "\n";
+        $meta .= '<meta name="keywords" content="' . htmlspecialchars(implode(', ', $post['categories'] ?? []), ENT_QUOTES, 'UTF-8') . '">' . "\n";
+        $meta .= '<link rel="canonical" href="' . $url . '">' . "\n";
+
+        // Open Graph
+        $meta .= '<meta property="og:title" content="' . $title . '">' . "\n";
+        $meta .= '<meta property="og:description" content="' . $description . '">' . "\n";
+        $meta .= '<meta property="og:url" content="' . $url . '">' . "\n";
+        $meta .= '<meta property="og:type" content="' . ($post ? 'article' : 'website') . '">' . "\n";
+        $meta .= '<meta property="og:image" content="' . $image . '">' . "\n";
+
+        // Twitter
+        $meta .= '<meta name="twitter:card" content="summary_large_image">' . "\n";
+        $meta .= '<meta name="twitter:title" content="' . $title . '">' . "\n";
+        $meta .= '<meta name="twitter:description" content="' . $description . '">' . "\n";
+        $meta .= '<meta name="twitter:image" content="' . $image . '">' . "\n";
+    }
 
     return $meta;
 }
@@ -218,7 +288,7 @@ function generate_sitemap() {
 
     foreach ($posts as $post) {
         if (!isset($post['slug']) || empty($post['slug'])) continue;
-        $sitemap .= '<url><loc>' . SITE_URL . '/post/' . $post['slug'] . '.html</loc><lastmod>' . date('Y-m-d', $post['modified']) . '</lastmod></url>' . "\n";
+        $sitemap .= '<url><loc>' . SITE_URL . '/' . urlencode($post['categories'][0] ?? '') . '/' . $post['slug'] . '.html</loc><lastmod>' . date('Y-m-d', $post['modified']) . '</lastmod></url>' . "\n";
     }
 
     $sitemap .= '</urlset>';

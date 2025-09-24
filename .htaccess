@@ -7,8 +7,15 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # Redirect /sitemap.xml to sitemap.php
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
-# Redirect /post/slug to post.php?slug=slug
-RewriteRule ^post/([^/]+)\.html$ post.php?slug=$1 [L]
+# Redirect /CategoryName/post-slug to post.php?slug=post-slug
+RewriteRule ^([^/]+)/([^/]+)\.html$ post.php?category=$1&slug=$2 [L]
+
+# Redirect root to index.php
+RewriteRule ^$ index.php [L]
+
+# Redirect /CategoryName/ to category.php?category=CategoryName (exclude existing files)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/]+)/?$ category.php?category=$1 [L]
 
 # Redirect /admin to admin/dashboard.php
 RewriteRule ^admin$ admin/dashboard.php [L]
@@ -21,6 +28,15 @@ RewriteRule ^admin$ admin/dashboard.php [L]
     Header always set X-Frame-Options DENY
     Header always set X-Content-Type-Options nosniff
     Header always set Referrer-Policy strict-origin-when-cross-origin
+</IfModule>
+
+# MIME type declarations for proper content serving
+<IfModule mod_mime.c>
+    AddType text/css .css
+    AddType application/javascript .js
+    AddType font/woff2 .woff2
+    AddType image/svg+xml .svg
+    AddType application/font-woff2 .woff2
 </IfModule>
 
 # Prevent access to sensitive files

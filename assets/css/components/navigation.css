@@ -213,9 +213,10 @@
 
 /* Breadcrumbs */
 .breadcrumbs {
-  padding: var(--space-lg) 0;
-  background-color: var(--color-bg-secondary);
+  padding: var(--space-sm) 0;
+  background-color: var(--color-bg-primary);
   border-bottom: 1px solid var(--color-border-light);
+  margin: 0 0 var(--space-lg) 0;
 }
 
 .breadcrumbs__list {
