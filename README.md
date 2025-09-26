@@ -2,12 +2,12 @@
 
 A beautiful, secure, and modern flat-file CMS built with PHP featuring a comprehensive design system, dark mode support, and exceptional user experience.
 
-![QiBlog Screenshot](https://via.placeholder.com/800x400/8B6914/FFFFFF?text=QiBlog+Modern+Interface)
+<img width="1728" height="677" alt="image" src="https://github.com/user-attachments/assets/24d03330-3a67-48e3-bf6b-30bb8d48c8a9" />
 
 ## ✨ Features
 
 ### 🎨 **Modern UI/UX Design**
-- **Comprehensive Design System**: Cohesive warm brown/cream color palette with modern typography
+- **Comprehensive Design System**: Cohesive sea color palette with modern typography
 - **Dark Mode Support**: Automatic system preference detection with manual toggle
 - **Responsive Design**: Mobile-first approach with fluid layouts
 - **Smooth Animations**: Subtle fade-in effects and hover interactions
@@ -90,8 +90,7 @@ A beautiful, secure, and modern flat-file CMS built with PHP featuring a compreh
 ### Content Creation
 1. **Create Posts**: Use the "Create New Post" button in the admin dashboard
 2. **Rich Editor**: CKEditor 5 with full formatting capabilities
-3. **Metadata**: Add categories, tags, and custom excerpts
-4. **Preview**: Live preview functionality before publishing
+3. **Metadata**: Add categories, and custom excerpts
 
 ### Content Management
 - **Dashboard Overview**: Statistics cards showing post counts and recent activity
@@ -164,25 +163,6 @@ QiBlog/
     └── images/                # Image assets
         └── *.jpg, *.png, *.svg # Optimized images
 ```
-
-## 🎨 Design System
-
-### Color Palette
-- **Primary**: `#8B6914` (Warm golden brown)
-- **Accent**: `#D4AF37` (Gold accent)
-- **Background**: `#F8F4E1` (Warm cream)
-- **Text**: `#543310` (Deep brown)
-
-### Typography
-- **Primary Font**: Manrope (Google Fonts)
-- **Heading Font**: Manrope with serif fallback
-- **Monospace**: Fira Code for code blocks
-
-### Components
-- **Buttons**: Multiple variants (primary, secondary, accent, ghost)
-- **Cards**: Post cards, admin cards, statistics cards
-- **Navigation**: Responsive navigation with breadcrumbs
-- **Forms**: Enhanced form elements with validation states
 
 ## 🔧 Configuration
 
@@ -323,7 +303,7 @@ The project uses a modern CSS architecture with:
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the MIT License LICENSE.
 
 ## 🆘 Support
 
