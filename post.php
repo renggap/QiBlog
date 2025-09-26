@@ -18,21 +18,119 @@ if (!$post) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Post Not Found - <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/assets/css/style.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                color: #333;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .error-container {
+                background: white;
+                border-radius: 16px;
+                padding: 3rem;
+                text-align: center;
+                max-width: 600px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            .error-container h1 {
+                color: #1f2937;
+                margin-bottom: 1rem;
+                font-size: 2rem;
+            }
+
+            .error-container p {
+                color: #6b7280;
+                margin-bottom: 2rem;
+            }
+
+            .error-container a {
+                display: inline-block;
+                background: #4f46e5;
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background 0.3s ease;
+            }
+
+            .error-container a:hover {
+                background: #4338ca;
+            }
+
+            .floating-elements {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            .floating-circle {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.1);
+                animation: float 6s ease-in-out infinite;
+            }
+
+            .floating-circle:nth-child(1) {
+                width: 80px;
+                height: 80px;
+                top: 20%;
+                left: 10%;
+                animation-delay: 0s;
+            }
+
+            .floating-circle:nth-child(2) {
+                width: 60px;
+                height: 60px;
+                top: 60%;
+                right: 15%;
+                animation-delay: 2s;
+            }
+
+            .floating-circle:nth-child(3) {
+                width: 100px;
+                height: 100px;
+                bottom: 20%;
+                left: 15%;
+                animation-delay: 4s;
+            }
+
+            @keyframes float {
+                0%, 100% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-20px) rotate(180deg); }
+            }
+        </style>
     </head>
-    <body class="theme-transition">
-        <div class="hero">
-            <div class="hero__content">
-                <h1 class="hero__title">404 - Post Not Found</h1>
-                <p class="hero__subtitle">The post you're looking for doesn't exist.</p>
-                <a href="index.php" class="btn btn--accent btn--lg">
-                    <span class="icon">🏠</span>
-                    Back to Home
-                </a>
-            </div>
+    <body>
+        <div class="floating-elements">
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+        </div>
+        
+        <div class="error-container">
+            <h1>404 - Post Not Found</h1>
+            <p>The post you're looking for doesn't exist.</p>
+            <a href="index.php">
+                <span style="margin-right: 0.5rem;">🏠</span>
+                Back to Home
+            </a>
         </div>
     </body>
     </html>
@@ -46,11 +144,8 @@ if (!$post) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php echo generate_meta_tags($post); ?>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
-
+    <title><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?> | <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></title>
+    
     <!-- Enhanced Structured Data -->
     <script type="application/ld+json">
     {
@@ -80,234 +175,480 @@ if (!$post) {
     }
     </script>
 
-    <title><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?> | <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></title>
-</head>
-<body class="theme-transition">
-
-    <!-- Reading Progress Bar -->
-    <div class="reading-progress">
-        <div class="reading-progress__bar"></div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav__container">
-            <a href="/index.php" class="nav__brand">
-                <span class="nav__logo">📖</span>
-                <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?>
-            </a>
-
-            <div class="nav__actions">
-                <a href="/index.php" class="btn btn--ghost btn--sm">
-                    <span class="icon">🏠</span>
-                    Home
-                </a>
-                <button class="theme-toggle btn btn--ghost btn--sm" aria-label="Toggle dark mode">
-                    <span class="theme-icon">🌙</span>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main id="main-content" class="section section--lg">
-        <article class="container">
-            <div class="mx-auto" style="max-width: 800px;">
-                <!-- Breadcrumbs with Schema Markup -->
-                <nav class="breadcrumbs mb-lg animate-fade-in-up" aria-label="breadcrumb">
-                    <div class="breadcrumbs__list">
-                        <li class="breadcrumbs__item">
-                            <a href="/index.php" class="breadcrumbs__link">Home</a>
-                        </li>
-                        <li class="breadcrumbs__separator" aria-hidden="true">→</li>
-                        <?php if (!empty($post['categories'])): ?>
-                            <?php foreach ($post['categories'] as $index => $category): ?>
-                                <?php if ($index > 0): ?>
-                                    <li class="breadcrumbs__separator" aria-hidden="true">→</li>
-                                <?php endif; ?>
-                                <li class="breadcrumbs__item">
-                                    <a href="/<?php echo urlencode($category); ?>/"
-                                       class="breadcrumbs__link">
-                                        <?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
-                            <li class="breadcrumbs__separator" aria-hidden="true">→</li>
-                        <?php endif; ?>
-                        <li class="breadcrumbs__item">
-                            <span class="breadcrumbs__current" aria-current="page">
-                                <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
-                            </span>
-                        </li>
-                    </div>
-                </nav>
-
-                <!-- Enhanced Structured Data for Breadcrumbs -->
-                <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "BreadcrumbList",
-                    "itemListElement": [
-                        {
-                            "@type": "ListItem",
-                            "position": 1,
-                            "name": "Home",
-                            "item": "<?php echo SITE_URL; ?>/"
-                        }
-                        <?php if (!empty($post['categories'])): ?>
-                        <?php foreach ($post['categories'] as $index => $category): ?>
-                        ,{
-                            "@type": "ListItem",
-                            "position": <?php echo 2 + $index; ?>,
-                            "name": "<?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>",
-                            "item": "<?php echo SITE_URL; ?>/<?php echo urlencode($category); ?>/"
-                        }
-                        <?php endforeach; ?>
-                        <?php endif; ?>
-                        ,{
-                            "@type": "ListItem",
-                            "position": <?php echo 2 + count($post['categories']); ?>,
-                            "name": "<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>",
-                            "item": "<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
-                        }
-                    ]
-                }
-                </script>
-
-                <!-- Article Header -->
-                <header class="mb-4xl animate-fade-in-up" style="animation-delay: 200ms;">
-                    <h1 class="text-4xl font-bold mb-lg leading-tight">
-                        <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
-                    </h1>
-
-                    <div class="flex flex-wrap items-center gap-md text-muted mb-xl">
-                        <time datetime="<?php echo htmlspecialchars($post['date'], ENT_QUOTES, 'UTF-8'); ?>">
-                            📅 <?php echo htmlspecialchars(date('F j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?>
-                        </time>
-                    </div>
-                </header>
-
-                <!-- Article Content -->
-                <div class="post-content animate-fade-in-up" style="animation-delay: 200ms;">
-                    <?php
-                    // Define allowed HTML tags for content from CKEditor
-                    $allowed_html_tags = '<h1><h2><h3><h4><h5><h6><p><a><br><strong><em><ul><ol><li><blockquote><img><pre><code><table><thead><tbody><tr><th><td><hr><figure><figcaption>';
-                    echo strip_tags($post['content'], $allowed_html_tags);
-                    ?>
-                </div>
-
-                <!-- Article Footer -->
-                 <footer class="mt-4xl pt-4xl border-t border-border-light animate-fade-in-up" style="animation-delay: 400ms;">
-                     <!-- Social Sharing -->
-                     <div class="mb-4xl">
-                         <h3 class="text-xl font-semibold mb-lg">Share this article</h3>
-                         <div class="flex flex-wrap gap-md">
-                             <button class="share-btn btn btn--secondary btn--sm"
-                                     data-url="<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
-                                     data-title="<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>"
-                                     onclick="shareArticle('twitter', this.dataset.url, this.dataset.title)">
-                                 <span class="icon">🐦</span>
-                                 Twitter
-                             </button>
-                             <button class="share-btn btn btn--secondary btn--sm"
-                                     data-url="<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
-                                     data-title="<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>"
-                                     onclick="shareArticle('facebook', this.dataset.url, this.dataset.title)">
-                                 <span class="icon">📘</span>
-                                 Facebook
-                             </button>
-                             <button class="share-btn btn btn--secondary btn--sm"
-                                     data-url="<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
-                                     onclick="copyToClipboard(this.dataset.url)">
-                                 <span class="icon">🔗</span>
-                                 Copy Link
-                             </button>
-                         </div>
-                     </div>
-
-                     <!-- Navigation -->
-                     <div class="mt-4xl pt-4xl border-t border-border-light">
-                         <div class="flex justify-between items-center">
-                             <a href="/index.php" class="btn btn--ghost btn--sm">
-                                 <span class="icon">←</span>
-                                 Back to Home
-                             </a>
-
-                             <div class="flex gap-sm">
-                                 <button class="theme-toggle btn btn--ghost btn--sm" aria-label="Toggle dark mode">
-                                     <span class="theme-icon">🌙</span>
-                                 </button>
-                             </div>
-                         </div>
-                     </div>
-                 </footer>
-            </div>
-        </article>
-    </main>
-
-    <!-- Enhanced Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="text-center">
-                <div class="mb-lg">
-                    <h3 class="text-lg font-semibold mb-sm">Powered by QiBlog</h3>
-                    <p class="text-muted">
-                        A modern, secure flat-file CMS built with PHP
-                    </p>
-                </div>
-
-                <!-- Footer links removed as requested -->
-
-                <div class="pt-lg border-t border-border-light">
-                    <p class="text-sm text-muted">
-                        © <?php echo date('Y'); ?> <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?>.
-                        Built with ❤️ using modern web technologies.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Enhanced Scripts -->
-    <script>
-        // Reading Progress Bar
-        function updateReadingProgress() {
-            const progressBar = document.querySelector('.reading-progress__bar');
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            progressBar.style.width = scrollPercent + '%';
+    <!-- Breadcrumb Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "<?php echo SITE_URL; ?>/"
+            }
+            <?php if (!empty($post['categories'])): ?>
+            <?php foreach ($post['categories'] as $index => $category): ?>
+            ,{
+                "@type": "ListItem",
+                "position": <?php echo 2 + $index; ?>,
+                "name": "<?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?>",
+                "item": "<?php echo SITE_URL; ?>/<?php echo urlencode($category); ?>/"
+            }
+            <?php endforeach; ?>
+            <?php endif; ?>
+            ,{
+                "@type": "ListItem",
+                "position": <?php echo 2 + count($post['categories']); ?>,
+                "name": "<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>",
+                "item": "<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+            }
+        ]
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        // Theme Toggle
-        function initThemeToggle() {
-            const themeToggle = document.querySelector('.theme-toggle');
-            const themeIcon = document.querySelector('.theme-icon');
-            const body = document.body;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
 
-            // Check for saved theme preference or default to system
-            const savedTheme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-            if (savedTheme) {
-                body.className = savedTheme === 'dark' ? 'theme-dark' : '';
-                updateThemeIcon(themeIcon, savedTheme === 'dark');
-            } else if (systemPrefersDark) {
-                body.className = 'theme-dark';
-                updateThemeIcon(themeIcon, true);
+        .post-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #4f46e5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .post-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+            line-height: 1.2;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .post-content {
+            color: #4b5563;
+            margin-bottom: 2rem;
+        }
+
+        .post-content h1, .post-content h2, .post-content h3,
+        .post-content h4, .post-content h5, .post-content h6 {
+            color: #1f2937;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1rem;
+        }
+
+        .post-content ul, .post-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .post-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .post-content blockquote {
+            border-left: 4px solid #4f46e5;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .post-content pre {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .post-content code {
+            background: #f3f4f6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .post-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .post-footer {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 2rem;
+            margin-top: 2rem;
+        }
+
+        .share-section {
+            margin-bottom: 2rem;
+        }
+
+        .share-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .share-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        /* Color variations for cards */
+        .purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .green { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .orange { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .red { background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%); }
+        .dark { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
+        .pink { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .cyan { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .violet { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .indigo { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+        .check-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+
+        .breadcrumbs a:hover {
+            color: white;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
             }
 
-            themeToggle.addEventListener('click', () => {
-                const isDark = body.classList.toggle('theme-dark');
-                updateThemeIcon(themeIcon, isDark);
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            });
-        }
+            .post-title {
+                font-size: 1.5rem;
+            }
 
-        function updateThemeIcon(icon, isDark) {
-            icon.textContent = isDark ? '☀️' : '🌙';
-        }
+            .card-content {
+                padding: 1.5rem;
+            }
 
+            .share-buttons {
+                justify-content: center;
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <a href="/index.php" class="logo" style="text-decoration: none;">
+                <div class="logo-icon">B</div>
+                <span style="color: white; font-size: 1.5rem; font-weight: 600;"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></span>
+            </a>
+        </header>
+
+        <div class="post-container">
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumbs">
+                <a href="/index.php">Home</a>
+                <span>→</span>
+                <?php if (!empty($post['categories'])): ?>
+                    <?php foreach ($post['categories'] as $index => $category): ?>
+                        <?php if ($index > 0): ?>
+                            <span>→</span>
+                        <?php endif; ?>
+                        <a href="/<?php echo urlencode($category); ?>/"><?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8'); ?></a>
+                    <?php endforeach; ?>
+                    <span>→</span>
+                <?php endif; ?>
+                <span><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?></span>
+            </nav>
+
+            <!-- Post Card -->
+            <article class="post-card">
+                <?php
+                $colors = ['purple', 'blue', 'green', 'orange', 'red', 'dark', 'pink', 'cyan', 'violet', 'indigo'];
+                $category = !empty($post['categories']) ? htmlspecialchars($post['categories'][0], ENT_QUOTES, 'UTF-8') : 'General';
+                $colorIndex = crc32($category) % count($colors);
+                $color = $colors[$colorIndex];
+                ?>
+                <div class="card-header <?php echo $color; ?>">
+                    <span><?php echo $category; ?></span>
+                    <div class="check-icon">✓</div>
+                </div>
+                <div class="card-content">
+                    <h1 class="post-title"><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
+                    
+                    <div class="post-meta">
+                        <span>📅 <?php echo htmlspecialchars(date('F j, Y', strtotime($post['date'])), ENT_QUOTES, 'UTF-8'); ?></span>
+                        <?php if (!empty($post['categories'])): ?>
+                            <span>🏷️ <?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?></span>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="post-content">
+                        <?php
+                        // Define allowed HTML tags for content from CKEditor
+                        $allowed_html_tags = '<h1><h2><h3><h4><h5><h6><p><a><br><strong><em><ul><ol><li><blockquote><img><pre><code><table><thead><tbody><tr><th><td><hr><figure><figcaption>';
+                        echo strip_tags($post['content'], $allowed_html_tags);
+                        ?>
+                    </div>
+
+                    <div class="post-footer">
+                        <!-- Social Sharing -->
+                        <div class="share-section">
+                            <h3>Share this article</h3>
+                            <div class="share-buttons">
+                                <button class="share-btn" onclick="shareArticle('twitter', '<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html', '<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>')">
+                                    <span>🐦</span>
+                                    Twitter
+                                </button>
+                                <button class="share-btn" onclick="shareArticle('facebook', '<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html', '<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>')">
+                                    <span>📘</span>
+                                    Facebook
+                                </button>
+                                <button class="share-btn" onclick="copyToClipboard('<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html')">
+                                    <span>🔗</span>
+                                    Copy Link
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Navigation -->
+                        <div class="navigation">
+                            <!-- Navigation removed as site title now links to homepage -->
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script>
         // Social Sharing
         function shareArticle(platform, url, title) {
             const encodedUrl = encodeURIComponent(url);
@@ -333,7 +674,7 @@ if (!$post) {
             navigator.clipboard.writeText(url).then(() => {
                 // Show success feedback
                 const notification = document.createElement('div');
-                notification.className = 'fixed top-4 right-4 bg-success text-inverse px-lg py-md rounded-lg shadow-lg z-50 animate-fade-in-up';
+                notification.className = 'notification';
                 notification.textContent = 'Link copied to clipboard!';
                 document.body.appendChild(notification);
 
@@ -342,6 +683,19 @@ if (!$post) {
                 }, 3000);
             });
         }
+
+        // Add parallax effect to floating elements
+        let mouseX = 0, mouseY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX / window.innerWidth;
+            mouseY = e.clientY / window.innerHeight;
+            
+            document.querySelectorAll('.floating-circle').forEach((circle, index) => {
+                const speed = (index + 1) * 0.5;
+                circle.style.transform = `translate(${mouseX * 20 * speed}px, ${mouseY * 20 * speed}px)`;
+            });
+        });
 
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -356,39 +710,6 @@ if (!$post) {
                 }
             });
         });
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            updateReadingProgress();
-            initThemeToggle();
-
-            window.addEventListener('scroll', updateReadingProgress);
-            window.addEventListener('resize', updateReadingProgress);
-        });
     </script>
-
-    <!-- Reading Progress Bar Styles -->
-    <style>
-        .reading-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--color-bg-secondary);
-            z-index: var(--z-fixed);
-        }
-
-        .reading-progress__bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-            width: 0%;
-            transition: width 0.1s ease;
-        }
-
-        .theme-dark .reading-progress__bar {
-            background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
-        }
-    </style>
 </body>
 </html>
