@@ -144,7 +144,6 @@ if (!$post) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php echo generate_meta_tags($post); ?>
-    <title><?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?> | <?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></title>
     
     <!-- Enhanced Structured Data -->
     <script type="application/ld+json">
@@ -168,7 +167,7 @@ if (!$post) {
         },
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+            "@id": "<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? 'General'); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
         },
         "articleSection": "<?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?>",
         "keywords": "<?php echo htmlspecialchars(implode(', ', $post['categories']), ENT_QUOTES, 'UTF-8'); ?>"
@@ -201,7 +200,7 @@ if (!$post) {
                 "@type": "ListItem",
                 "position": <?php echo 2 + count($post['categories']); ?>,
                 "name": "<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>",
-                "item": "<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
+                "item": "<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? 'General'); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html"
             }
         ]
     }
@@ -565,7 +564,7 @@ if (!$post) {
 
     <div class="container">
         <header>
-            <a href="/index.php" class="logo" style="text-decoration: none;">
+            <a href="/" class="logo" style="text-decoration: none;">
                 <div class="logo-icon">B</div>
                 <span style="color: white; font-size: 1.5rem; font-weight: 600;"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></span>
             </a>
@@ -574,7 +573,7 @@ if (!$post) {
         <div class="post-container">
             <!-- Breadcrumbs -->
             <nav class="breadcrumbs">
-                <a href="/index.php">Home</a>
+                <a href="/">Home</a>
                 <span>→</span>
                 <?php if (!empty($post['categories'])): ?>
                     <?php foreach ($post['categories'] as $index => $category): ?>
@@ -623,15 +622,15 @@ if (!$post) {
                         <div class="share-section">
                             <h3>Share this article</h3>
                             <div class="share-buttons">
-                                <button class="share-btn" onclick="shareArticle('twitter', '<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html', '<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>')">
+                                <button class="share-btn" onclick="shareArticle('twitter', '<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? 'General'); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html', '<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>')">
                                     <span>🐦</span>
                                     Twitter
                                 </button>
-                                <button class="share-btn" onclick="shareArticle('facebook', '<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html', '<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>')">
+                                <button class="share-btn" onclick="shareArticle('facebook', '<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? 'General'); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html', '<?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>')">
                                     <span>📘</span>
                                     Facebook
                                 </button>
-                                <button class="share-btn" onclick="copyToClipboard('<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html')">
+                                <button class="share-btn" onclick="copyToClipboard('<?php echo SITE_URL; ?>/<?php echo urlencode($post['categories'][0] ?? 'General'); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html')">
                                     <span>🔗</span>
                                     Copy Link
                                 </button>

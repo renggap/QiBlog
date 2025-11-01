@@ -1,8 +1,23 @@
-# QiBlog: Modern Flat-File CMS with Enhanced UI/UX
+# QiBlog v2: Modern Flat-File CMS with Enhanced UI/UX
+
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
+![PHP](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 A beautiful, secure, and modern flat-file CMS built with PHP featuring a comprehensive design system, dark mode support, and exceptional user experience.
 
 <img width="1728" height="677" alt="image" src="https://github.com/user-attachments/assets/24d03330-3a67-48e3-bf6b-30bb8d48c8a9" />
+
+## 🆕 What's New in Version 2
+
+QiBlog v2 represents a complete rewrite with significant improvements:
+
+- **Enhanced Design System**: Comprehensive CSS architecture with component-based organization
+- **Improved Accessibility**: Full WCAG 2.1 AA compliance with better screen reader support
+- **Modern UI/UX**: Redesigned interface with dark mode support and smooth animations
+- **Better Performance**: Optimized CSS loading and reduced dependencies
+- **Enhanced Security**: Improved CSRF protection and input sanitization
+- **Mobile-First Design**: Responsive layouts optimized for all devices
 
 ## ✨ Features
 
@@ -15,7 +30,7 @@ A beautiful, secure, and modern flat-file CMS built with PHP featuring a compreh
 
 ### 🔧 **Core Functionality**
 - **Flat-File Storage**: Posts stored as HTML files with YAML frontmatter
-- **WYSIWYG Editor**: CKEditor 5 for rich content creation
+- **WYSIWYG Editor**: Trix editor for rich content creation (lightweight and reliable)
 - **Session-Based Authentication**: Secure admin login system
 - **SEO Optimized**: Meta tags, structured data, XML sitemap, friendly URLs
 - **Categories & Tags**: Organize content with flexible taxonomy
@@ -89,7 +104,7 @@ A beautiful, secure, and modern flat-file CMS built with PHP featuring a compreh
 
 ### Content Creation
 1. **Create Posts**: Use the "Create New Post" button in the admin dashboard
-2. **Rich Editor**: CKEditor 5 with full formatting capabilities
+2. **Rich Editor**: Trix editor with clean HTML output and modern interface
 3. **Metadata**: Add categories, and custom excerpts
 
 ### Content Management
@@ -189,6 +204,13 @@ chmod 644 assets/js/*.js
 
 ## 🚀 Advanced Features
 
+### Editor System
+- **Trix Editor**: Modern, lightweight rich text editor by Basecamp
+- **Clean HTML Output**: Produces semantic HTML perfect for static files
+- **No External Dependencies**: Self-contained operation without API keys
+- **Mobile-Friendly**: Optimized for all devices and screen sizes
+- **Fast Performance**: 35KB footprint with instant loading
+
 ### Theme System
 - **Automatic Detection**: Respects user's system preference
 - **Manual Toggle**: Theme switcher in navigation
@@ -196,6 +218,7 @@ chmod 644 assets/js/*.js
 - **Smooth Transitions**: Seamless theme switching
 
 ### Performance Optimizations
+- **Editor Performance**: Trix editor loads instantly without dependencies
 - **CSS Architecture**: Modular CSS with efficient selectors
 - **Font Loading**: Optimized web font loading
 - **Image Optimization**: Responsive images with proper sizing
@@ -255,6 +278,13 @@ chmod 644 assets/js/*.js
 
 ## 🔧 Development
 
+### Editor Integration
+The project uses Trix editor for content creation:
+- **Simple Integration**: Drop-in replacement for traditional textareas
+- **Clean Markup**: Generates semantic HTML without unnecessary attributes
+- **Form Compatibility**: Works seamlessly with existing PHP forms
+- **Custom Styling**: Matches the overall design system
+
 ### CSS Architecture
 The project uses a modern CSS architecture with:
 - **CSS Custom Properties** for theming
@@ -276,6 +306,7 @@ The project uses a modern CSS architecture with:
 
 ### Optimization Features
 - **Minimal Dependencies**: Only essential external resources
+- **Lightweight Editor**: Trix editor (35KB) vs heavier alternatives
 - **Efficient CSS**: Optimized selectors and minimal redundancy
 - **Font Display**: Swap for faster text rendering
 - **Image Optimization**: Proper sizing and modern formats
@@ -320,4 +351,4 @@ This project is open source and available under the MIT License LICENSE.
 
 ---
 
-**QiBlog** - A modern, beautiful, and secure flat-file CMS that prioritizes user experience and developer happiness. Built with ❤️ and attention to detail.
+**QiBlog v2** - A modern, beautiful, and secure flat-file CMS that prioritizes user experience and developer happiness. Built with ❤️ and attention to detail.

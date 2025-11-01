@@ -34,8 +34,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="module" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
     <style>
+        /* Trix Editor Styles */
+        trix-editor {
+            min-height: 400px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            background-color: #f9fafb;
+            color: #374151;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
+        trix-editor:focus {
+            outline: none;
+            border-color: #4f46e5;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .trix-button-row {
+            border: 2px solid #e5e7eb;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            background-color: #f9fafb;
+        }
+
+        .trix-dialog {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .trix-button {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+        }
+
+        .trix-button:hover {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .trix-button.trix-active {
+            background-color: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -379,8 +430,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group">
                         <label for="content" class="form-label">Content *</label>
-                        <textarea class="form-textarea" id="content" name="content"
-                                  placeholder="Write your post content here..." required></textarea>
+                        <input type="hidden" id="content" name="content" required>
+                        <trix-editor id="trix-content" input="content" placeholder="Write your post content here..."></trix-editor>
                     </div>
 
                     <div class="form-actions">
@@ -398,16 +449,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
         <script>
-            ClassicEditor
-                .create(document.querySelector('#content'), {
-                    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', '|', 'sourceEditing', 'undo', 'redo'],
-                    simpleUpload: {
-                        uploadUrl: 'upload.php'
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+            // Initialize Trix editor
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Initializing Trix editor...');
+                
+                // Add event listener to sync content with hidden input
+                const trixEditor = document.querySelector('trix-editor');
+                const hiddenInput = document.getElementById('content');
+                
+                if (trixEditor && hiddenInput) {
+                    // Trix automatically syncs with the hidden input
+                    // But we can add custom event handlers if needed
+                    trixEditor.addEventListener('trix-change', function() {
+                        console.log('Trix content changed');
+                    });
+                    
+                    trixEditor.addEventListener('trix-blur', function() {
+                        console.log('Trix editor lost focus');
+                    });
+                    
+                    console.log('Trix editor initialized successfully');
+                } else {
+                    console.error('Trix editor elements not found');
+                }
+            });
 
             // Theme toggle functionality
             const themeToggle = document.querySelector('.theme-toggle');

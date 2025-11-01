@@ -1,6 +1,6 @@
 /* ===================================
    QiBlog Enhanced Design System
-   Modern, cohesive UI/UX redesign
+   Exclusive Light Theme with WCAG Compliance
    =================================== */
 
 /* Import Design System Foundation */
@@ -19,13 +19,12 @@
 @import url('./utilities/responsive.css');
 @import url('./utilities/accessibility.css');
 
-/* Import Theme System */
+/* Import Light Theme Only */
 @import url('./themes/light.css');
-@import url('./themes/dark.css');
 
 /* ===================================
-   Legacy Support (Temporary)
-   =================================== */
+    Legacy Support (Temporary)
+    =================================== */
 
 /* Temporary compatibility with existing Bulma classes */
 .button.is-primary {
@@ -78,8 +77,8 @@
 }
 
 /* ===================================
-   Enhanced Global Styles
-   =================================== */
+    Enhanced Global Styles - Light Theme Only
+    =================================== */
 
 /* Smooth scrolling for the entire page */
 html {
@@ -133,8 +132,8 @@ a:hover {
 }
 
 /* ===================================
-   Layout Components
-   =================================== */
+    Layout Components
+    =================================== */
 
 /* Hero Section */
 .hero {
@@ -201,7 +200,7 @@ a:hover {
     max-width: var(--container-xl);
     margin: 0 auto;
     padding: 0 var(--space-lg);
-    color: var(--color-cream);
+    color: var(--color-text-primary);
 }
 
 /* Footer Enhancement */
@@ -210,11 +209,12 @@ a:hover {
     border-top: 1px solid var(--color-border-light);
     padding: var(--space-2xl) 0;
     margin-top: auto;
+    color: var(--color-text-secondary);
 }
 
 /* ===================================
-   Content Components
-   =================================== */
+    Content Components
+    =================================== */
 
 /* Post Content Enhancement */
 .post-content {
@@ -286,6 +286,7 @@ a:hover {
     border-radius: var(--radius-sm);
     font-family: var(--font-family-mono);
     font-size: 0.875em;
+    border: 1px solid var(--color-border-light);
 }
 
 .post-content pre {
@@ -294,6 +295,7 @@ a:hover {
     border-radius: var(--radius-md);
     overflow-x: auto;
     margin: var(--space-xl) 0;
+    border: 1px solid var(--color-border-light);
 }
 
 .post-content pre code {
@@ -302,8 +304,8 @@ a:hover {
 }
 
 /* ===================================
-   Responsive Design
-   =================================== */
+    Responsive Design
+    =================================== */
 
 @media (max-width: 768px) {
     .hero {
@@ -351,5 +353,60 @@ a:hover {
 
     .section {
         padding: var(--space-xl) 0;
+    }
+}
+
+/* ===================================
+    Light Theme Specific Enhancements
+    =================================== */
+
+/* Ensure all elements use light theme colors */
+* {
+    scrollbar-color: var(--color-border-medium) var(--color-bg-secondary);
+}
+
+/* Enhanced scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border-medium);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-dark);
+}
+
+/* Remove any dark mode transitions */
+.theme-transition {
+    transition: background-color var(--transition-normal), color var(--transition-normal), border-color var(--transition-normal);
+}
+
+/* Ensure consistent light theme across all elements */
+body,
+.theme-light,
+.light-theme {
+    background-color: var(--color-bg-primary) !important;
+    color: var(--color-text-primary) !important;
+}
+
+/* Override any potential dark mode styles */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg-primary: #FFFFFF !important;
+        --color-bg-secondary: #F8F9FA !important;
+        --color-bg-tertiary: #F1F3F4 !important;
+        --color-text-primary: #1A0E08 !important;
+        --color-text-secondary: #3E2723 !important;
+        --color-text-muted: #5D4037 !important;
+        --color-border-light: #E0E0E0 !important;
+        --color-border-medium: #BDBDBD !important;
+        --color-border-dark: #757575 !important;
     }
 }

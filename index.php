@@ -352,7 +352,7 @@ $posts = $result['posts'];
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">
-                                <a href="<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html">
+                                <a href="/<?php echo urlencode($post['categories'][0] ?? 'General'); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html">
                                     <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
                                 </a>
                             </h3>

@@ -1,6 +1,6 @@
 /* ===================================
    QiBlog Design System - Navigation
-   Enhanced navigation components
+   Enhanced navigation components for light theme only
    =================================== */
 
 /* Base Navigation */
@@ -12,6 +12,7 @@
   z-index: var(--z-sticky);
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-sm);
 }
 
 .nav__container {
@@ -32,11 +33,18 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+  transition: color var(--transition-fast);
 }
 
 .nav__brand:hover {
   color: var(--color-primary);
   text-decoration: none;
+}
+
+.nav__brand:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .nav__logo {
@@ -75,9 +83,16 @@
   text-decoration: none;
 }
 
+.nav__link:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 .nav__link--active {
   color: var(--color-primary);
   background-color: var(--color-bg-secondary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .nav__actions {
@@ -132,6 +147,11 @@
   text-decoration: none;
 }
 
+.nav__dropdown-item:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
 /* Mobile Navigation */
 .nav__toggle {
   display: none;
@@ -142,6 +162,12 @@
   cursor: pointer;
   padding: var(--space-sm);
   border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+}
+
+.nav__toggle:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .nav__toggle span {
@@ -249,6 +275,12 @@
   text-decoration: none;
 }
 
+.breadcrumbs__link:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 .breadcrumbs__separator {
   color: var(--color-text-muted);
   font-size: var(--text-sm);
@@ -287,6 +319,12 @@
   border-color: var(--color-primary);
   color: var(--color-primary);
   text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.pagination__item:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .pagination__item--active {
@@ -359,5 +397,52 @@
 
   .breadcrumbs__item {
     gap: var(--space-xs);
+  }
+}
+
+/* Enhanced focus states for accessibility */
+.nav__link:focus-visible,
+.nav__dropdown-item:focus-visible,
+.pagination__item:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .nav {
+    border-bottom-width: 2px;
+    border-bottom-color: var(--color-border-dark);
+  }
+
+  .nav__dropdown-menu {
+    border-width: 2px;
+    border-color: var(--color-border-dark);
+  }
+
+  .breadcrumbs {
+    border-bottom-width: 2px;
+    border-bottom-color: var(--color-border-dark);
+  }
+
+  .pagination__item {
+    border-width: 2px;
+    border-color: var(--color-border-dark);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .nav__dropdown-menu {
+    transition: none;
+  }
+
+  .nav__mobile-menu {
+    transition: none;
+  }
+
+  .nav__toggle span {
+    transition: none;
   }
 }

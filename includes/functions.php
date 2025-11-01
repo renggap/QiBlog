@@ -96,7 +96,7 @@ function get_posts_by_category($category, $page = 1, $per_page = null) {
     $filtered_files = [];
     foreach ($all_files as $file) {
         $post = parse_post($file);
-        if ($post && in_array($category, $post['categories'])) {
+        if ($post && in_array(strtolower($category), array_map('strtolower', $post['categories']))) {
             $filtered_files[] = $file;
         }
     }
@@ -254,7 +254,7 @@ function generate_meta_tags($post = null, $category = null) {
         // Post or homepage meta tags
         $title = $post ? htmlspecialchars($post['title'] . ' | ' . SITE_TITLE, ENT_QUOTES, 'UTF-8') : htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8');
         $description = $post ? htmlspecialchars($post['excerpt'], ENT_QUOTES, 'UTF-8') : htmlspecialchars('Jendela Info Blog', ENT_QUOTES, 'UTF-8');
-        $url = $post ? htmlspecialchars(SITE_URL . '/' . urlencode($post['categories'][0] ?? '') . '/' . $post['slug'] . '.html', ENT_QUOTES, 'UTF-8') : htmlspecialchars(SITE_URL, ENT_QUOTES, 'UTF-8');
+        $url = $post ? htmlspecialchars(SITE_URL . '/' . urlencode($post['categories'][0] ?? 'General') . '/' . $post['slug'] . '.html', ENT_QUOTES, 'UTF-8') : htmlspecialchars(SITE_URL, ENT_QUOTES, 'UTF-8');
         $image = htmlspecialchars(SITE_URL . '/assets/images/default.jpg', ENT_QUOTES, 'UTF-8');
 
         $meta = '<title>' . $title . '</title>' . "\n";
@@ -288,7 +288,7 @@ function generate_sitemap() {
 
     foreach ($posts as $post) {
         if (!isset($post['slug']) || empty($post['slug'])) continue;
-        $sitemap .= '<url><loc>' . SITE_URL . '/' . urlencode($post['categories'][0] ?? '') . '/' . $post['slug'] . '.html</loc><lastmod>' . date('Y-m-d', $post['modified']) . '</lastmod></url>' . "\n";
+        $sitemap .= '<url><loc>' . SITE_URL . '/' . urlencode($post['categories'][0] ?? 'General') . '/' . $post['slug'] . '.html</loc><lastmod>' . date('Y-m-d', $post['modified']) . '</lastmod></url>' . "\n";
     }
 
     $sitemap .= '</urlset>';

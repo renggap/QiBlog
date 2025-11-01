@@ -489,7 +489,7 @@ $total_posts = $result['total'];
 
     <div class="container">
         <header>
-            <a href="/index.php" class="logo" style="text-decoration: none;">
+            <a href="/" class="logo" style="text-decoration: none;">
                 <div class="logo-icon">B</div>
                 <span style="color: white; font-size: 1.5rem; font-weight: 600;"><?php echo htmlspecialchars(SITE_TITLE, ENT_QUOTES, 'UTF-8'); ?></span>
             </a>
@@ -524,7 +524,7 @@ $total_posts = $result['total'];
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">
-                                <a href="/<?php echo urlencode($post['categories'][0] ?? ''); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html">
+                                <a href="/<?php echo urlencode($post['categories'][0] ?? 'General'); ?>/<?php echo htmlspecialchars($post['slug'], ENT_QUOTES, 'UTF-8'); ?>.html">
                                     <?php echo htmlspecialchars($post['title'], ENT_QUOTES, 'UTF-8'); ?>
                                 </a>
                             </h3>

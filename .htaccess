@@ -7,8 +7,11 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # Redirect /sitemap.xml to sitemap.php
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
-# Redirect /CategoryName/post-slug to post.php?slug=post-slug
+# Redirect /CategoryName/post-slug to post.php?category=$1&slug=$2
 RewriteRule ^([^/]+)/([^/]+)\.html$ post.php?category=$1&slug=$2 [L]
+
+# Redirect direct /post-slug to post.php?slug=post-slug (for backward compatibility)
+RewriteRule ^([^/]+)\.html$ post.php?slug=$1 [L]
 
 # Redirect root to index.php
 RewriteRule ^$ index.php [L]
